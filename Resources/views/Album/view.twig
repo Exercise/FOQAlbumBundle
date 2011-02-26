@@ -1,0 +1,96 @@
+{# /album/:slug [view] #}
+
+{% extends "ExerciseBundle:Frontend:layout.twig" %}
+
+{% block title %}{{ document.title }}{% parent %}{% endblock %}
+
+{% block page_id %}albums{% endblock %}
+{% block page_class %}single{% endblock %}
+
+{% block content %}
+
+    {{ macro.page_title('Exercise Albums') }}
+    {{ _view.crumb_menu|raw }}
+
+    {% if user.is(document.user) %}
+        <div class="notice preview clearfix">
+            {% if (not document.isPublished) %}
+                <a class="button orange right" href="{% path 'album_publish' with ['id': document.id] %}" methodType="post" data-tmpl="alert_thanks" data-document="album" data-action="published" data-redirect="self">Publish</a>
+                This album is not published.
+            {% endif %}
+            {% if _view.acl.isAllowed(document, 'delete') %}
+                <a class="button grey right" href="{% path 'album_delete' with ['id': document.id] %}" methodType="delete" data-tmpl="alert_error" data-document="album" data-action="deleted">Delete</a>
+            {% endif %}
+            {% if _view.acl.isAllowed(document, 'update') %}
+                <a class="button grey right" href="{% path 'album_edit' with ['id': document.id] %}">Edit</a>
+            {% endif %}
+        </div>
+        {% if _view.session.hasFlash('notice/published') %}
+            {{ macro.alertSuccess('Success! Your album is now published.',false) }}
+        {% elseif _view.session.hasFlash('notice/edited') %}
+            {{ macro.alertSuccess('Your changes have been saved.',false) }}
+        {% endif %}
+    {% endif %}
+
+    {{ macro.content_title(document.title) }}
+
+    <p class="description">{{ document.summary }}</p>
+
+    {% if document.isPublished %}
+        {# meta top #}
+        <div class="meta top clearfix">
+            <div class="stats"><b>Photos:</b> {{ document.photos.count|numberFormat }}</div>
+            <div class="stats"><b>Views:</b> {{ document.impressions|numberFormat }}</div>
+            <div class="stats"><b>Comments:</b> <span class="num">{{ document.comments.count|numberFormat }}</span></div>
+            {{ macro.twitterShare }}
+            {{ macro.facebookLike }}
+        </div>
+
+    {% endif %}
+
+    {{ document.body|paragraph|raw }}
+
+    {% if document.isPublished %}
+    
+        {% render "AlbumBundle:PhotoFrontend:listByAlbum" with ["album": document] %}
+
+        <div class="user clearfix">
+            <a href="{% path 'doctrine_user_user_view' with ['username':document.user.username] %}" class="thumbnail medium border hover left">{% image document.user "avatar" "standard_thumbnail" %}</a>
+            <div class="links right">
+                <span class="date">{{ document.createdAt|date('M j, Y') }}</span>
+                <a href="{% path 'doctrine_user_user_view' with ['username':document.user.username] %}" class="profile">View Profile</a>
+                {% if document.user != user %}<a href="{% path 'message_new' %}?to={{ document.user.username }}" class="message">Send Message</a>{% endif %}
+            </div>
+            <a href="{% path 'doctrine_user_user_view' with ['username':document.user.username] %}" class="name">{{ document.user.firstName }} {{ document.user.lastName }}</a>
+            <div class="title">{{ document.user.occupation }}</div>
+            <div class="bio">{{ document.user.aboutMe }}</div>
+        </div>
+
+        {% if user.username %}
+              {% render "CommentBundle:Frontend:postLoggedIn" with [ 'id': document.commentableId, 'user':user] %}
+        {% else %}
+              {% render "CommentBundle:Frontend:postLoggedOut" %}
+        {% endif %}
+
+        <div class="list comments small clear" data-comment-total="{{ document.commentCount }}">
+            <ul>
+                {{ commentMacro.show(document.comments.getLastComments(10), _view) }}
+            </ul>
+        </div>
+
+        {{ commentMacro.loadmore(_view, user.username, document.commentableId, 10, document.comments.count) }}
+
+    {% endif %}
+
+    {# Social scripts #}
+    {% javascript 'http://platform.twitter.com/widgets.js' %}
+    {% javascript 'http://s7.addthis.com/js/250/addthis_widget.js#username=xa-4bfea45531405fe7' %}
+
+{% endblock %}
+
+{% block sidebar %}
+    {% set sidebar = [
+        'addAlbum':_view.acl.isAllowed('album', 'create')
+    ] %}
+    {% parent %}
+{% endblock %}

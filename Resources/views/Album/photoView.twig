@@ -1,0 +1,58 @@
+{# /album/:slug [view] #}
+
+{% extends "ExerciseBundle:Frontend:layout.twig" %}
+
+{% block title %}{{ document.title }}{% parent %}{% endblock %}
+
+{% block page_id %}albums{% endblock %}
+{% block page_class %}single{% endblock %}
+
+{% block content %}
+
+    {{ macro.page_title('Exercise Albums') }}
+    {{ _view.crumb_menu|raw }}
+
+    {{ macro.content_title(document.title) }}
+
+    <div class="pagination">
+        {% if album.previousPhoto(photo) %}
+            <a href="{% path "album_photo_view" with ["albumSlug": album.slug, "key": album.previousPhoto(photo).key] %}">Previous</a>
+        {% else %}
+            <span>Previous</span>
+        {% endif %}
+        {% if album.nextPhoto(photo) %}
+            <a href="{% path "album_photo_view" with ["albumSlug": album.slug, "key": album.nextPhoto(photo).key] %}">Next</a>
+        {% else %}
+            <span>Next</span>
+        {% endif %}
+        ({{ album.photoPosition(photo) }} of {{ album.nbPhotos }})
+    </div>
+
+    <a href="{% path "album_view" with ["slug": album.slug] %}">Back to album</a><br />
+
+    {% image photo "image" "content_image" %}
+
+    <p class="description">{{ document.summary }}</p>
+
+    {{ document.body|paragraph|raw }}
+
+    <div class="list comments small clear" data-comment-total="{{ document.commentCount }}">
+        <ul>
+            {{ commentMacro.show(document.comments.getLastComments(10), _view) }}
+        </ul>
+    </div>
+
+    {{ commentMacro.loadmore(_view, user.username, document.commentableId, 10, document.comments.count) }}
+
+    {# Social scripts #}
+    {% javascript 'http://platform.twitter.com/widgets.js' %}
+    {% javascript 'http://s7.addthis.com/js/250/addthis_widget.js#username=xa-4bfea45531405fe7' %}
+
+{% endblock %}
+
+{% block sidebar %}
+    {% set sidebar = [
+        'addAlbum':_view.acl.isAllowed('album', 'create')
+    ] %}
+    {% parent %}
+{% endblock %}

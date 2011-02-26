@@ -1,0 +1,19 @@
+{% set currentUrl %}{% path 'album_view' with ["slug": album.slug] %}{% endset %}
+{% set pagination = [
+    'current': photos.pages.current,
+    'total': photos.pages.last,
+    'url': currentUrl
+] %}
+{{ macro.pagination(pagination) }}
+<ol>
+    {% for photo in photos %}
+        <li>
+            <a href="{% path "album_photo_view" with ["albumSlug": album.slug, "key": photo.key] %}">
+                {% image photo "image" "large_thumbnail" %}
+                <span class="comments">{{ photo.commentCount }} comments</span>
+                <span class="views">{{ photo.impressions }} views</span>
+            </a>
+        </li>
+    {% endfor %}
+</ol>
+{{ macro.pagination(pagination) }}
