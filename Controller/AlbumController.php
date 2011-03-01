@@ -2,68 +2,66 @@
 
 namespace FOQ\AlbumBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\ContainerAware;
 use FOQ\AlbumBundle\Document\Album;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class AlbumController extends Controller
+class AlbumController extends ContainerAware
 {
     public function indexAction()
     {
-        $albums = $this->get('foq_album.repository.album')->findRecents();
+        $albums = $this->container->get('foq_album.repository.album')->findRecents();
 
-        return $this->get('templating')->renderResponse('FOSAlbumBundle:Album:list.html.twig', compact('albums'));
+        return $this->container->get('templating')->renderResponse('FOSAlbumBundle:Album:list.html.twig', compact('albums'));
     }
 
+    /**
+     * Show the new form
+     */
     public function newAction()
     {
-        if(!$this->isAllowed(new Album(), 'create')) {
-            return $this->goToLogin();
-        }
-        $album = new Album();
-        $form = $this->get('foq_album.form.album');
-        $form->setData($album);
+        $form = $this->container->get('fos_user.form.user');
 
-        // Prepare the crumb menu
-        $this->addContentBreadCrumb();
-        $this->get('menu.crumb')->addChild('New album', $this->get('router')->generate('album_new'));
+        $form->process();
 
-        return $this->render('AlbumBundle:Frontend:new.twig', array('form' => $form));
+        return $this->container->get('templating')->renderResponse('FOQAlbunBundle:Album:new.html.twig', array('form' => $form));
     }
 
+    /**
+     * Create a user and send a confirmation email
+     */
     public function createAction()
     {
-        if(!$this->isAllowed(new Album(), 'create')) {
-            return $this->goToLogin();
-        }
-        $album = new Album();
-        $form = $this->get('foq_album.form.album');
-        $form->setData($album);
+        $form = $this->container->get('fos_user.form.user');
 
-        $form->bind($this->get('request')->request->get($form->getName()));
-        if(!$form->isValid()) {
-            return $this->renderJson($form->fetchAllErrors(), 400);
+        $process = $form->process(null, $this->container->getParameter('fos_user.email.confirmation.enabled'));
+        if ($process) {
+            $this->setFlash('foq_album_album_create', 'success');
+            return new RedirectResponse($this->container->get('foq_album.url_generator')->getUrlForAlbum($form->getData()));
         }
+
+        return $this->container->get('templating')->renderResponse('FOSUserBundle:User:new.html.twig', array('form' => $form));
     }
 
-    public function publishAction($id)
+    public function publishAction($username, $slug)
     {
-        $album = $this->getRepository()->find($id);
-        if(!$album) throw new NotFoundHttpException();
+        $album = $this->findAlbum($username, $slug);
 
-        if($album->isPublished()) {
-            return $this->renderJson(array('error' => 'Album is already published.'), 403);
-        }
+        $this->container->get('foq_album.publisher.album')->publish($album);
+        $this->container->get('foq_album.object_manager')->flush();
 
-        if(!$this->isAllowed($album, 'publish')) {
-            throw new Exception\HttpForbiddenException();
-        }
+        return new RedirectResponse($this->container->get('foq_album.url_generator')->getUrlForAlbum($form->getData()));
+    }
 
-        $album->publish();
-        $this->getOdm()->flush();
+    public function unPublishAction($username, $slug)
+    {
+        $album = $this->findAlbum($username, $slug);
 
-        return $this->renderJson();
+        $this->container->get('foq_album.publisher.album')->unPublish($album);
+        $this->container->get('foq_album.object_manager')->flush();
+
+        return new RedirectResponse($this->container->get('foq_album.url_generator')->getUrlForAlbum($form->getData()));
     }
 
     protected function getSortFieldInfo($sortBy = null, $optionalFields = null)
@@ -93,5 +91,33 @@ class AlbumController extends Controller
         } else {
             return $sortData['date'];
         }
+    }
+
+    /**
+     * Find an album by username and album slug
+     *
+     * @throws NotFoundException if album does not exist
+     * @return Album
+     */
+    protected function findAlbum($username, $slug)
+    {
+        $user = $this->container->get('fos_user.repository.user')->findUserByUsername($username);
+
+        if (empty($user)) {
+            throw new NotFoundException(sprintf('The user "%s" does not exist', $username));
+        }
+
+        $album = $this->container->get('foq_album.repository.album')->findAlbumByUserAndSlug($user, $slug);
+
+        if (empty($album)) {
+            throw new NotFoundHttpException(sprintf('The album with user "%s" and slug "%s" does not exist', $username, $slug));
+        }
+
+        return $album;
+    }
+
+    protected function setFlash($action, $value)
+    {
+        $this->container->get('session')->setFlash($action, $value);
     }
 }
