@@ -4,16 +4,24 @@ namespace FOQ\AlbumBundle\Document;
 use FOQ\ContentBundle\Document\UserContent;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use DateTime;
 
 /**
  * @mongodb:Document(
  *   collection="album",
  *   repositoryClass="FOQ\AlbumBundle\Document\AlbumRepository"
  * )
- * @mongodb:HasLifecycleCallbacks
  */
-class Album extends UserContent
+abstract class Album extends UserContent
 {
+    /**
+     * User who owns this album
+     * You must overwrite this mapping to set the target document to your user class
+     *
+     * @var User
+     */
+    protected $user = null;
+
     /**
      * Photos in the album
      *
@@ -38,21 +46,70 @@ class Album extends UserContent
      */
     protected $rank = 0;
 
+    /**
+     * Whether or not the album is visible
+     *
+     * @var bool
+     * @mongodb:Field(type="bool")
+     */
+    protected $isPublished = false;
+
+    /**
+     * Number of times the album has been displayed
+     *
+     * @var int
+     * @mongodb:Field(type="int")
+     */
+    protected $impressions = 0;
+
+    /**
+     * @mongodb:Field(type="date")
+     */
+    protected $createdAt;
+
+    /**
+     * @mongodb:Field(type="date")
+     */
+    protected $updatedAt;
+
     public function __construct()
     {
-        $this->photos = new ArrayCollection();
+        $this->photos    = new ArrayCollection();
+        $this->createdAt = new DateTime();
     }
 
     /**
-     * Return the image of the first photo if any
-     *
-     * @return Image
-     **/
-    public function getFirstPhotoImage()
+     * @return bool
+     */
+    public function getIsPublished()
     {
-        if($photo = $this->getFirstPhoto()) {
-            return $photo->getImage();
-        }
+        return $this->isPublished;
+    }
+
+    /**
+     * @param  bool
+     * @return null
+     */
+    public function setIsPublished($isPublished)
+    {
+        $this->isPublished = $isPublished;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param  User
+     * @return null
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
     }
 
     /**
@@ -87,13 +144,25 @@ class Album extends UserContent
         $this->photos[] = $photo;
     }
 
-    public function getPhotoByKey($key)
+    public function getPhotoByNumber($number)
     {
         foreach($this->getPhotos() as $photo) {
-            if($key === $photo->getKey()) {
+            if($number == $photo->getNumber()) {
                 return $photo;
             }
         }
+    }
+
+    public function getNextPhotoNumber()
+    {
+        $number = 1;
+        foreach ($this->getPhotos() as $photo) {
+            if ($photo->getNumber() > $number) {
+                $number = $photo->getNumber();
+            }
+        }
+
+        return $number;
     }
 
     public function getPhotoPosition(Photo $photo)
@@ -129,5 +198,46 @@ class Album extends UserContent
     public function getRank()
     {
         return $this->rank;
+    }
+
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedNow()
+    {
+        $this->updatedAt = new DateTime();
+    }
+
+    /**
+     * @return int number of impressions
+     */
+    public function getImpressions()
+    {
+        return $this->impressions;
+    }
+
+    /**
+     * Set the number of impressions
+     *
+     * @param int
+     **/
+    public function setImpressions($nb)
+    {
+        $this->impressions = $nb;
+    }
+
+    /**
+     * Increment the number of page impressions
+     */
+    public function incrementImpressions()
+    {
+        $this->impressions++;
     }
 }

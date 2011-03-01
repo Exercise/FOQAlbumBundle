@@ -10,25 +10,109 @@ use FOQ\ContentBundle\Document\Content;
 class Photo extends Content
 {
     /**
-     * Unique key. Can be used as an ID.
-     * Embedded documents can't have mongo IDs, but we need a unique identifier
+     * Photo number in an album
+     *
+     * @var int
+     * @mongodb:Field(type="integer")
+     */
+    protected $number = '';
+
+    /**
+     * Photo title
      *
      * @var string
      * @mongodb:Field(type="string")
      */
-    protected $key = '';
+    protected $title = null;
+
+    /**
+     * Number of times the album has been displayed
+     *
+     * @var int
+     * @mongodb:Field(type="int")
+     */
+    protected $impressions = 0;
+
+    /**
+     * @mongodb:Field(type="date")
+     */
+    protected $createdAt;
+
+    /**
+     * @mongodb:Field(type="date")
+     */
+    protected $updatedAt;
 
     public function __construct()
     {
-        // generate a strong unique key (37^12 possibilities)
-        $chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-        for ($i = 0; $i < 6; $i++) {
-            $this->key .= $chars[mt_rand( 0, 35 )];
-        }
+        $this->createdAt = new DateTime();
     }
 
-    public function getKey()
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+      return $this->title;
+    }
+
+    /**
+     * @param  string
+     * @return null
+     */
+    public function setTitle($title)
+    {
+      $this->title = $title;
+    }
+
+    public function getNumber()
     {
         return $this->key;
+    }
+
+    public function setNumber($number)
+    {
+        $this->number = $number;
+    }
+
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedNow()
+    {
+        $this->updatedAt = new DateTime();
+    }
+
+    /**
+     * @return int number of impressions
+     */
+    public function getImpressions()
+    {
+        return $this->impressions;
+    }
+
+    /**
+     * Set the number of impressions
+     *
+     * @param int
+     **/
+    public function setImpressions($nb)
+    {
+        $this->impressions = $nb;
+    }
+
+    /**
+     * Increment the number of page impressions
+     */
+    public function incrementImpressions()
+    {
+        $this->impressions++;
     }
 }
