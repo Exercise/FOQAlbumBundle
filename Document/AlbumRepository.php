@@ -12,16 +12,11 @@ class AlbumRepository extends DocumentRepository
 {
     public function findOneByUserAndSlugForUser(User $user, $slug, User $forUser = null)
     {
-        $query = $this->createPublishedOrOwnQuery($forUser)
+        return $this->createPublishedOrOwnQuery($forUser)
             ->field('user.$id')->equals(new MongoId($user->getId()))
-            ->field('slug')->equals($slug);
-
-        return $query->getQuery()->getSingleResult();
-    }
-
-    public function findOnePublishedByUserAndSlug(User $user, $slug)
-    {
-        return $this->findOneBy(array('user.$id' => new MongoId($user->getId()), 'slug' => $slug, 'isPublished' => true));
+            ->field('slug')->equals($slug)
+            ->getQuery()
+            ->getSingleResult();
     }
 
     public function findForUser(User $user = null, $asPaginator = false)
