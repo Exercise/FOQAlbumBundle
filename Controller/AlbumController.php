@@ -11,9 +11,9 @@ class AlbumController extends ContainerAware
 {
     public function indexAction()
     {
-        $albums = $this->container->get('foq_album.repository.album')->findRecents();
+        $albums = $this->container->get('foq_album.repository.album')->findAll();
 
-        return $this->container->get('templating')->renderResponse('FOSAlbumBundle:Album:list.html.twig', compact('albums'));
+        return $this->container->get('templating')->renderResponse('FOQAlbumBundle:Album:list.html.twig', compact('albums'));
     }
 
     /**
@@ -22,8 +22,6 @@ class AlbumController extends ContainerAware
     public function newAction()
     {
         $form = $this->container->get('fos_user.form.user');
-
-        $form->process();
 
         return $this->container->get('templating')->renderResponse('FOQAlbunBundle:Album:new.html.twig', array('form' => $form));
     }
@@ -41,7 +39,7 @@ class AlbumController extends ContainerAware
             return new RedirectResponse($this->container->get('foq_album.url_generator')->getUrlForAlbum($form->getData()));
         }
 
-        return $this->container->get('templating')->renderResponse('FOSUserBundle:User:new.html.twig', array('form' => $form));
+        return $this->container->get('templating')->renderResponse('FOQUserBundle:User:new.html.twig', array('form' => $form));
     }
 
     public function publishAction($username, $slug)
