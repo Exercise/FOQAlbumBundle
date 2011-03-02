@@ -1,14 +1,14 @@
 <?php
 
 namespace FOQ\AlbumBundle\Document;
-use FOQ\ContentBundle\Document\UserContent;
+
+use FOQ\AlbunBundle\Model\PhotoCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use DateTime;
 
 /**
- * @mongodb:Document(
- *   collection="album",
+ * @mongodb:MappedSuperclass(
  *   repositoryClass="FOQ\AlbumBundle\Document\AlbumRepository"
  * )
  */
@@ -183,66 +183,11 @@ abstract class Album
     }
 
     /**
-     * Get the first photo
-     *
-     * @return Photo
-     **/
-    public function getFirstPhoto()
-    {
-        return $this->getPhotos()->first();
-    }
-
-    /**
-     * @return Collection
+     * @return PhotoCollection
      */
     public function getPhotos()
     {
-        return $this->photos ?: $this->photos = new ArrayCollection();
-    }
-
-    public function addPhoto(Photo $photo)
-    {
-        $photo->setNumber($this->getNextPhotoNumber());
-        $this->getPhotos()->add($photo);
-    }
-
-    public function getPhotoByNumber($number)
-    {
-        foreach($this->getPhotos() as $photo) {
-            if($number == $photo->getNumber()) {
-                return $photo;
-            }
-        }
-    }
-
-    public function getPhotoPosition(Photo $photo)
-    {
-        return $this->getPhotos()->indexOf($photo) + 1;
-    }
-
-    public function isFirstPhoto(Photo $photo)
-    {
-        return 1 === $this->getPhotoPosition($photo);
-    }
-
-    public function isLastPhoto(Photo $photo)
-    {
-        return $this->getNbPhotos() === $this->getPhotoPosition($photo);
-    }
-
-    public function getPreviousPhoto(Photo $photo)
-    {
-        return $this->getPhotos()->get($this->getPhotos()->indexOf($photo)-1);
-    }
-
-    public function getNextPhoto(Photo $photo)
-    {
-        return $this->getPhotos()->get($this->getPhotos()->indexOf($photo)+1);
-    }
-
-    public function getNbPhotos()
-    {
-        return $this->getPhotos()->count();
+        return new PhotoCollection($this->photos ?: $this->photos = new ArrayCollection());
     }
 
     public function getRank()
@@ -294,17 +239,5 @@ abstract class Album
     public function incrementImpressions()
     {
         $this->impressions++;
-    }
-
-    protected function getNextPhotoNumber()
-    {
-        $number = 1;
-        foreach ($this->getPhotos() as $photo) {
-            if ($photo->getNumber() > $number) {
-                $number = $photo->getNumber();
-            }
-        }
-
-        return $number;
     }
 }
