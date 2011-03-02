@@ -10,19 +10,44 @@ use MongoId;
 
 class AlbumRepository extends DocumentRepository
 {
-    public function findOneByUserAndSlug(User $user, $slug)
+    public function findOneByUserAndSlugForUser(User $user, $slug, User $forUser = null)
     {
-        return $this->findOneBy(array('user.$id' => new MongoId($user->getId()), 'slug' => $slug));
+        $query = $this->createPublishedOrOwnQuery($forUser)
+            ->field('user.$id')->equals(new MongoId($user->getId()))
+            ->field('slug')->equals($slug);
+
+        return $query->getQuery()->getSingleResult();
     }
 
-    public function findAll($asPaginator = false)
+    public function findOnePublishedByUserAndSlug(User $user, $slug)
     {
-        $query = $this->createQueryBuilder()->sort('updatedAt', 'DESC');
+        return $this->findOneBy(array('user.$id' => new MongoId($user->getId()), 'slug' => $slug, 'isPublished' => true));
+    }
+
+    public function findForUser(User $user = null, $asPaginator = false)
+    {
+        $query = $this->createPublishedOrOwnQuery($user)
+            ->sort('updatedAt', 'DESC');
 
         if ($asPaginator) {
             return new Paginator(new DoctrineMongoDBAdapter($query));
         }
 
         return array_values($query->getQuery()->execute()->toArray());
+    }
+
+    public function createPublishedOrOwnQuery(User $user = null)
+    {
+        $query = $this->createQueryBuilder();
+
+        if ($user) {
+            $query
+                ->addOr($query->expr()->field('published')->equals(true))
+                ->addOr($query->expr()->field('user.$id')->equals(new MongoId($user->getId())));
+        } else {
+            $query->field('published')->equals(true);
+        }
+
+        return $query;
     }
 }
