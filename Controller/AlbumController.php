@@ -106,13 +106,13 @@ class AlbumController extends ContainerAware
      */
     protected function findAlbum($username, $slug)
     {
-        $user = $this->container->get('fos_user.repository.user')->findUserByUsername($username);
+        $user = $this->container->get('fos_user.user_manager')->findUserByUsername($username);
 
         if (empty($user)) {
             throw new NotFoundException(sprintf('The user "%s" does not exist', $username));
         }
 
-        $album = $this->container->get('foq_album.repository.album')->findAlbumByUserAndSlug($user, $slug);
+        $album = $this->container->get('foq_album.repository.album')->findOneByUserAndSlug($user, $slug);
 
         if (empty($album)) {
             throw new NotFoundHttpException(sprintf('The album with user "%s" and slug "%s" does not exist', $username, $slug));
