@@ -6,8 +6,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use DateTime;
 
 /**
- * @mongodb:EmbeddedDocument
- * @mongodb:HasLifecycleCallbacks
+ * @mongodb:MappedSuperclass
  */
 abstract class Photo
 {
