@@ -191,11 +191,6 @@ abstract class Album implements AlbumInterface
         return new PhotoCollection($this->photos ?: $this->photos = new ArrayCollection());
     }
 
-    public function getRank()
-    {
-        return $this->rank;
-    }
-
     public function setRank($rank)
     {
         $this->rank = $rank;
@@ -222,16 +217,6 @@ abstract class Album implements AlbumInterface
     public function getImpressions()
     {
         return $this->impressions;
-    }
-
-    /**
-     * Set the number of impressions
-     *
-     * @param int
-     **/
-    public function setImpressions($nb)
-    {
-        $this->impressions = $nb;
     }
 
     /**

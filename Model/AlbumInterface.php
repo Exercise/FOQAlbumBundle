@@ -56,8 +56,6 @@ interface AlbumInterface
      */
     public function getPhotos();
 
-    public function getRank();
-
     public function setRank($rank);
 
     public function getCreatedAt();
@@ -70,13 +68,6 @@ interface AlbumInterface
      * @return int number of impressions
      */
     public function getImpressions();
-
-    /**
-     * Set the number of impressions
-     *
-     * @param int
-     **/
-    public function setImpressions($nb);
 
     /**
      * Increment the number of page impressions
