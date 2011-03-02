@@ -2,7 +2,7 @@
 
 namespace FOQ\AlbumBundle\Model;
 
-use FOQ\Model\CollectionWrapper;
+use FOQ\AlbumBundle\Model\CollectionWrapper;
 
 class PhotoCollection extends CollectionWrapper
 {

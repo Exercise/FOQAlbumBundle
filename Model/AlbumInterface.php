@@ -2,7 +2,7 @@
 
 namespace FOQ\AlbumBundle\Model;
 use FOS\UserBundle\Model\User;
-use Doctrine\Common\Collections\Collection;
+use FOQ\AlbumBundle\Model\PhotoCollection;
 use DateTime;
 
 interface AlbumInterface

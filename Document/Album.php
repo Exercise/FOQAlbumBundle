@@ -2,6 +2,7 @@
 
 namespace FOQ\AlbumBundle\Document;
 
+use FOS\UserBundle\Model\User;
 use FOQ\AlbumBundle\Model\AlbumInterface;
 use FOQ\AlbumBundle\Model\PhotoCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,9 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use DateTime;
 
 /**
- * @mongodb:MappedSuperclass(
- *   repositoryClass="FOQ\AlbumBundle\Document\AlbumRepository"
- * )
+ * @mongodb:MappedSuperclass
  */
 abstract class Album implements AlbumInterface
 {
@@ -178,7 +177,7 @@ abstract class Album implements AlbumInterface
      * @param  User
      * @return null
      */
-    public function setUser($user)
+    public function setUser(User $user)
     {
         $this->user = $user;
     }
