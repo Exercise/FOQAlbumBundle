@@ -26,9 +26,29 @@ abstract class Album extends UserContent
      * Photos in the album
      *
      * @var Collection
-     * @mongodb:EmbedMany(targetDocument="FOQ\AlbumBundle\Document\Photo")
+     * You must overwrite this mapping to set the target document to your user class
      */
     protected $photos = null;
+
+    /**
+     * End of abstract mappings
+     */
+
+    /**
+     * Album name
+     *
+     * @var string
+     * @mongodb:Field(type="string")
+     */
+    protected $name = null;
+
+    /**
+     * Album description
+     *
+     * @var string
+     * @mongodb:Field(type="string")
+     */
+    protected $description = null;
 
     /**
      * Number of photos in the album
@@ -76,6 +96,40 @@ abstract class Album extends UserContent
     {
         $this->photos    = new ArrayCollection();
         $this->createdAt = new DateTime();
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param  string
+     * @return null
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param  string
+     * @return null
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
     }
 
     /**
@@ -130,18 +184,10 @@ abstract class Album extends UserContent
         return $this->photos ?: $this->photos = new ArrayCollection();
     }
 
-    /**
-     * @param  Collection
-     * @return null
-     */
-    public function setPhotos($photos)
-    {
-        $this->photos = $photos;
-    }
-
     public function addPhoto(Photo $photo)
     {
-        $this->photos[] = $photo;
+        $photo->setNumber($this->getNextPhotoNumber());
+        $this->getPhotos()->add($photo);
     }
 
     public function getPhotoByNumber($number)
@@ -151,18 +197,6 @@ abstract class Album extends UserContent
                 return $photo;
             }
         }
-    }
-
-    public function getNextPhotoNumber()
-    {
-        $number = 1;
-        foreach ($this->getPhotos() as $photo) {
-            if ($photo->getNumber() > $number) {
-                $number = $photo->getNumber();
-            }
-        }
-
-        return $number;
     }
 
     public function getPhotoPosition(Photo $photo)
@@ -239,5 +273,17 @@ abstract class Album extends UserContent
     public function incrementImpressions()
     {
         $this->impressions++;
+    }
+
+    protected function getNextPhotoNumber()
+    {
+        $number = 1;
+        foreach ($this->getPhotos() as $photo) {
+            if ($photo->getNumber() > $number) {
+                $number = $photo->getNumber();
+            }
+        }
+
+        return $number;
     }
 }

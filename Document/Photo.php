@@ -2,12 +2,13 @@
 
 namespace FOQ\AlbumBundle\Document;
 use FOQ\ContentBundle\Document\Content;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * @mongodb:EmbeddedDocument
  * @mongodb:HasLifecycleCallbacks
  */
-class Photo extends Content
+abstract class Photo
 {
     /**
      * Photo number in an album
@@ -49,11 +50,26 @@ class Photo extends Content
     }
 
     /**
+     * Set the photo file
+     *
+     * @param File $file
+     * @return null
+     */
+    abstract public function setFile(File $file);
+
+    /**
+     * Get the photo web path (e.g. images/animals/turtle.jpg)
+     *
+     * @return string
+     */
+    abstract public function getWebPath();
+
+    /**
      * @return string
      */
     public function getTitle()
     {
-      return $this->title;
+        return $this->title;
     }
 
     /**
@@ -62,7 +78,7 @@ class Photo extends Content
      */
     public function setTitle($title)
     {
-      $this->title = $title;
+        $this->title = $title;
     }
 
     public function getNumber()
