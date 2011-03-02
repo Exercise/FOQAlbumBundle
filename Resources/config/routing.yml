@@ -3,42 +3,42 @@ foq_album_index:
     defaults:   { _controller: foq_album.controller.album:indexAction }
     requirements: { _method: "get|head" }
 
-foq_album_new:
+foq_album_album_new:
     pattern:    /add
     defaults:   { _controller: foq_album.controller.album:newAction }
     requirements: { _method: "get|head" }
 
-foq_album_create:
+foq_album_album_create:
     pattern:    /add
     defaults:   { _controller: foq_album.controller.album:createAction }
     requirements: { _method: post }
 
-foq_album_edit:
-    pattern:    /edit/{slug}
+foq_album_album_album_edit:
+    pattern:    /edit/{username}/{slug}
     defaults:   { _controller: foq_album.controller.album:editAction }
     requirements: { _method: "get|head" }
 
-foq_album_update:
-    pattern:    /edit/{slug}
+foq_album_album_update:
+    pattern:    /edit/{username}/{slug}
     defaults:   { _controller: foq_album.controller.album:updateAction }
     requirements: { _method: post }
 
-foq_album_delete:
-  pattern:  /delete/{slug}
+foq_album_album_delete:
+  pattern:  /delete/{username}/{slug}
   defaults:  { _controller: foq_album.controller.album:deleteAction }
   requirements: { _method: delete }
 
-foq_album_publish:
-  pattern:  /publish/{slug}
+foq_album_album_publish:
+  pattern:  /publish/{username}/{slug}
   defaults:  { _controller: foq_album.controller.album:publishAction }
   requirements: { _method: post }
 
-foq_album_view:
-    pattern:    /{slug}
-    defaults:   { _controller: foq_album.controller.album:viewAction }
+foq_album_album_show:
+    pattern:    /{username}/{slug}
+    defaults:   { _controller: foq_album.controller.album:showAction }
     requirements: { _method: "get|head", slug: "[\w\d-]+" }
 
-foq_album_photo_view:
-    pattern: /{albumSlug}/{number}
-    defaults: { _controller: foq_album.controller.photo:viewAction }
+foq_album_photo_show:
+    pattern: /{username}/{slug}/{number}
+    defaults: { _controller: foq_album.controller.photo:showAction }
     requirements: { _method: "get|head", albumSlug: "[\w-]+", number: "\d+" }
