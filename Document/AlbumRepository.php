@@ -4,8 +4,6 @@ namespace FOQ\AlbumBundle\Document;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use FOS\UserBundle\Model\User;
-use Zend\Paginator\Paginator;
-use ZendPaginatorAdapter\DoctrineMongoDBAdapter;
 use MongoId;
 
 class AlbumRepository extends DocumentRepository
@@ -19,16 +17,10 @@ class AlbumRepository extends DocumentRepository
             ->getSingleResult();
     }
 
-    public function findForUser(User $user = null, $asPaginator = false)
+    public function createPublicSortedQuery(User $user = null)
     {
-        $query = $this->createPublishedOrOwnQuery($user)
+        return $this->createPublishedOrOwnQuery($user)
             ->sort('updatedAt', 'DESC');
-
-        if ($asPaginator) {
-            return new Paginator(new DoctrineMongoDBAdapter($query));
-        }
-
-        return array_values($query->getQuery()->execute()->toArray());
     }
 
     public function createPublishedOrOwnQuery(User $user = null)
