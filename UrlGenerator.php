@@ -3,7 +3,7 @@
 namespace FOQ\AlbumBundle;
 
 use Symfony\Component\Routing\Router;
-use FOQ\AlbumBundle\Document\Album;
+use FOQ\AlbumBundle\Model\AlbumInterface;
 use FOQ\AlbumBundle\Document\Photo;
 
 class UrlGenerator
@@ -15,11 +15,11 @@ class UrlGenerator
         $this->generator = $router->getGenerator();
     }
 
-    public function getUrlForAlbumShow(Album $album)
+    public function getUrlForAlbumShow(AlbumInterface $album)
     {
         return $this->generator->generate('foq_album_album_show', array(
             'username' => $album->getUser()->getUsername(),
-            'slug' => $album->getSlug()
+            'slug'     => $album->getSlug()
         ));
     }
 }

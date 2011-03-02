@@ -2,16 +2,16 @@
 
 namespace FOQ\AlbumBundle\Publisher;
 
-use FOQ\AlbumBundle\Document\Album;
+use FOQ\AlbumBundle\Model\AlbumInterface;
 
 class AlbumPublisher
 {
-    public function publish(Album $album)
+    public function publish(AlbumInterface $album)
     {
         $album->setIsPublished(true);
     }
 
-    public function unPublish(Album $album)
+    public function unPublish(AlbumInterface $album)
     {
         $album->setIsPublished(false);
     }
