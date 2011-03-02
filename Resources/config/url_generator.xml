@@ -5,7 +5,7 @@
     xsi:schemaLocation="http://www.symfony-project.org/schema/dic/services http://www.symfony-project.org/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="foq_album.url_generator">FOQ\AlbumBundle\UrlGenerator</parameter>
+        <parameter key="foq_album.url_generator.class">FOQ\AlbumBundle\UrlGenerator</parameter>
     </parameters>
 
     <services>
