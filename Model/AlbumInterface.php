@@ -10,6 +10,17 @@ interface AlbumInterface
     /**
      * @return string
      */
+    public function getSlug();
+
+    /**
+     * @param  string
+     * @return null
+     */
+    public function setSlug($slug);
+
+    /**
+     * @return string
+     */
     public function getTitle();
 
     /**

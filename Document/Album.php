@@ -43,10 +43,20 @@ abstract class Album implements AlbumInterface
     protected $id = null;
 
     /**
+     * Album slug
+     *
+     * @var string
+     * @mongodb:Field(type="string")
+     * @gedmo:Slug
+     */
+    protected $slug = null;
+
+    /**
      * Album title
      *
      * @var string
      * @mongodb:Field(type="string")
+     * @gedmo:Sluggable
      */
     protected $title = null;
 
@@ -112,6 +122,23 @@ abstract class Album implements AlbumInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param  string
+     * @return null
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
     }
 
     /**
