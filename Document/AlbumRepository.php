@@ -6,12 +6,13 @@ use Doctrine\ODM\MongoDB\DocumentRepository;
 use FOS\UserBundle\Model\User;
 use Zend\Paginator\Paginator;
 use ZendPaginatorAdapter\DoctrineMongoDBAdapter;
+use MongoId;
 
 class AlbumRepository extends DocumentRepository
 {
     public function findOneByUserAndSlug(User $user, $slug)
     {
-        return $this->findOneBy(array('user.$id' => $user->getId(), 'slug' => $slug));
+        return $this->findOneBy(array('user.$id' => new MongoId($user->getId()), 'slug' => $slug));
     }
 
     public function findAll($asPaginator = false)
