@@ -3,8 +3,6 @@
 namespace FOQ\AlbumBundle\Controller;
 
 use Symfony\Component\DependencyInjection\ContainerAware;
-use FOQ\AlbumBundle\Document\Album;
-use FOS\UserBundle\Model\User;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -12,16 +10,16 @@ class AlbumController extends ContainerAware
 {
     public function indexAction()
     {
-        $albums = $this->container->get('foq_album.repository.album')->findForUser($this->getUser(), true);
-
-        return $this->container->get('templating')->renderResponse('FOQAlbumBundle:Album:list.html.twig', compact('albums'));
+        return $this->getTemplating()->renderResponse('FOQAlbumBundle:Album:list.html.twig', array(
+            'albums' => $this->getProvider()->getPaginatedAlbums()
+        ));
     }
 
     public function showAction($username, $slug)
     {
-        $album = $this->findAlbum($username, $slug);
-
-        return $this->container->get('templating')->renderResponse('FOQAlbumBundle:Album:show.html.twig', compact('album'));
+        return $this->getTemplating()->renderResponse('FOQAlbumBundle:Album:show.html.twig', array(
+            'album' => $this->getProvider()->getAlbum($username, $slug)
+        ));
     }
 
     /**
@@ -29,9 +27,9 @@ class AlbumController extends ContainerAware
      */
     public function newAction()
     {
-        $form = $this->container->get('fos_user.form.user');
-
-        return $this->container->get('templating')->renderResponse('FOQAlbunBundle:Album:new.html.twig', array('form' => $form));
+        return $this->getTemplating()->renderResponse('FOQAlbunBundle:Album:new.html.twig', array(
+            'form' => $this->container->get('fos_user.form.user')
+        ));
     }
 
     /**
@@ -99,42 +97,18 @@ class AlbumController extends ContainerAware
         }
     }
 
-    /**
-     * Find an album by username and album slug
-     *
-     * @throws NotFoundException if album does not exist
-     * @return Album
-     */
-    protected function findAlbum($username, $slug)
-    {
-        $user = $this->container->get('fos_user.user_manager')->findUserByUsername($username);
-
-        if (empty($user)) {
-            throw new NotFoundHttpException(sprintf('The user "%s" does not exist', $username));
-        }
-
-        $album = $this->container->get('foq_album.repository.album')->findOneByUserAndSlugForUser($user, $slug, $this->getUser());
-
-        if (empty($album)) {
-            throw new NotFoundHttpException(sprintf('The album with user "%s" and slug "%s" does not exist or is not published', $username, $slug));
-        }
-
-        return $album;
-    }
-
-    protected function getUser()
-    {
-        if ($token = $this->container->get('security.context')->getToken()) {
-            if ($user = $token->getUser()) {
-                if ($user instanceof User) {
-                    return $user;
-                }
-            }
-        }
-    }
-
     protected function setFlash($action, $value)
     {
         $this->container->get('session')->setFlash($action, $value);
+    }
+
+    protected function getTemplating()
+    {
+        return $this->container->get('templating');
+    }
+
+    protected function getProvider()
+    {
+        return $this->container->get('foq_album.provider');
     }
 }
