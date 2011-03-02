@@ -16,6 +16,13 @@ class AlbumController extends ContainerAware
         return $this->container->get('templating')->renderResponse('FOQAlbumBundle:Album:list.html.twig', compact('albums'));
     }
 
+    public function showAction($username, $slug)
+    {
+        $album = $this->findAlbum($username, $slug);
+
+        return $this->container->get('templating')->renderResponse('FOQAlbumBundle:Album:show.html.twig', compact('album'));
+    }
+
     /**
      * Show the new form
      */
