@@ -15,7 +15,7 @@ class UrlGenerator
         $this->generator = $router->getGenerator();
     }
 
-    public function getUrlForAlbumShow(AlbumInterface $album)
+    public function getUrlForAlbum(AlbumInterface $album)
     {
         return $this->generator->generate('foq_album_album_show', array(
             'username' => $album->getUser()->getUsername(),
