@@ -15,11 +15,11 @@ class UrlGenerator
         $this->generator = $router->getGenerator();
     }
 
-    public function getUrlForAlbum(AlbumInterface $album)
+    public function getAlbumUrl($route, AlbumInterface $album, $absolute = false)
     {
-        return $this->generator->generate('foq_album_album_show', array(
+        return $this->generator->generate($route, array(
             'username' => $album->getUser()->getUsername(),
             'slug'     => $album->getSlug()
-        ));
+        ), $absolute);
     }
 }
