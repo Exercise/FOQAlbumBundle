@@ -90,7 +90,7 @@ abstract class Album implements AlbumInterface
      * @var bool
      * @mongodb:Field(type="boolean")
      */
-    protected $isPublished = false;
+    protected $published = false;
 
     /**
      * Number of times the album has been displayed
@@ -180,16 +180,16 @@ abstract class Album implements AlbumInterface
      */
     public function getIsPublished()
     {
-        return $this->isPublished;
+        return $this->published;
     }
 
     /**
      * @param  bool
      * @return null
      */
-    public function setIsPublished($isPublished)
+    public function setIsPublished($published)
     {
-        $this->isPublished = $isPublished;
+        $this->published = $published;
     }
 
     /**
