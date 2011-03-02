@@ -3,6 +3,7 @@
 namespace FOQ\AlbumBundle\Document;
 use FOQ\ContentBundle\Document\Content;
 use Symfony\Component\HttpFoundation\File\File;
+use DateTime;
 
 /**
  * @mongodb:EmbeddedDocument
@@ -14,7 +15,7 @@ abstract class Photo
      * Photo number in an album
      *
      * @var int
-     * @mongodb:Field(type="integer")
+     * @mongodb:Field(type="int")
      */
     protected $number = '';
 
@@ -83,7 +84,7 @@ abstract class Photo
 
     public function getNumber()
     {
-        return $this->key;
+        return $this->number;
     }
 
     public function setNumber($number)

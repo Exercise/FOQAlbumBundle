@@ -12,7 +12,7 @@ use DateTime;
  *   repositoryClass="FOQ\AlbumBundle\Document\AlbumRepository"
  * )
  */
-abstract class Album extends UserContent
+abstract class Album
 {
     /**
      * User who owns this album
@@ -33,6 +33,14 @@ abstract class Album extends UserContent
     /**
      * End of abstract mappings
      */
+
+    /**
+     * Document id
+     *
+     * @var string
+     * @mongodb:Id()
+     */
+    protected $id = null;
 
     /**
      * Album name
@@ -70,7 +78,7 @@ abstract class Album extends UserContent
      * Whether or not the album is visible
      *
      * @var bool
-     * @mongodb:Field(type="bool")
+     * @mongodb:Field(type="boolean")
      */
     protected $isPublished = false;
 
@@ -96,6 +104,14 @@ abstract class Album extends UserContent
     {
         $this->photos    = new ArrayCollection();
         $this->createdAt = new DateTime();
+    }
+
+    /**
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
@@ -232,6 +248,11 @@ abstract class Album extends UserContent
     public function getRank()
     {
         return $this->rank;
+    }
+
+    public function setRank($rank)
+    {
+        $this->rank = $rank;
     }
 
     public function getCreatedAt()
