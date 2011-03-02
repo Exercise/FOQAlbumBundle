@@ -1,6 +1,7 @@
 <?php
 
 namespace FOQ\AlbumBundle\Model;
+use FOS\UserBundle\Model\User;
 use Doctrine\Common\Collections\Collection;
 use DateTime;
 
@@ -9,18 +10,13 @@ interface AlbumInterface
     /**
      * @return string
      */
-    public function getId();
-
-    /**
-     * @return string
-     */
-    public function getName();
+    public function getTitle();
 
     /**
      * @param  string
      * @return null
      */
-    public function setName($name);
+    public function setTitle($title);
 
     /**
      * @return string
@@ -53,7 +49,7 @@ interface AlbumInterface
      * @param  User
      * @return null
      */
-    public function setUser($user);
+    public function setUser(User $user);
 
     /**
      * @return PhotoCollection

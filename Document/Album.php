@@ -2,8 +2,8 @@
 
 namespace FOQ\AlbumBundle\Document;
 
-use FOQ\AlbunBundle\Model\AlbumInterface;
-use FOQ\AlbunBundle\Model\PhotoCollection;
+use FOQ\AlbumBundle\Model\AlbumInterface;
+use FOQ\AlbumBundle\Model\PhotoCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use DateTime;
@@ -44,12 +44,12 @@ abstract class Album implements AlbumInterface
     protected $id = null;
 
     /**
-     * Album name
+     * Album title
      *
      * @var string
      * @mongodb:Field(type="string")
      */
-    protected $name = null;
+    protected $title = null;
 
     /**
      * Album description
@@ -118,18 +118,18 @@ abstract class Album implements AlbumInterface
     /**
      * @return string
      */
-    public function getName()
+    public function getTitle()
     {
-        return $this->name;
+        return $this->title;
     }
 
     /**
      * @param  string
      * @return null
      */
-    public function setName($name)
+    public function setTitle($title)
     {
-        $this->name = $name;
+        $this->title = $title;
     }
 
     /**
