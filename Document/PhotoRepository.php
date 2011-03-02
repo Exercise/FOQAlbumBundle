@@ -2,9 +2,9 @@
 
 namespace FOQ\AlbumBundle\Document;
 
-use FOQ\ContentBundle\Document\UserContentRepository;
+use Doctrine\ODM\MongoDB\DocumentRepository;
 
-class PhotoRepository extends UserContentRepository
+class PhotoRepository extends DocumentRepository
 {
     public function createQueryByAlbum(Album $album)
     {
