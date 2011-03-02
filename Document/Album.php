@@ -2,6 +2,7 @@
 
 namespace FOQ\AlbumBundle\Document;
 
+use FOQ\AlbunBundle\Model\AlbumInterface;
 use FOQ\AlbunBundle\Model\PhotoCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -12,7 +13,7 @@ use DateTime;
  *   repositoryClass="FOQ\AlbumBundle\Document\AlbumRepository"
  * )
  */
-abstract class Album
+abstract class Album implements AlbumInterface
 {
     /**
      * User who owns this album
