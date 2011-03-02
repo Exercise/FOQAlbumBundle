@@ -1,12 +1,12 @@
 album_index:
     pattern:    /
     defaults:   { _controller: foq_album.controller.album:indexAction }
-    requirements: { _method: [get, head] }
+    requirements: { _method: "get|head" }
 
 album_new:
     pattern:    /add
     defaults:   { _controller: foq_album.controller.album:newAction }
-    requirements: { _method: [get, head] }
+    requirements: { _method: "get|head" }
 
 album_create:
     pattern:    /add
@@ -14,17 +14,17 @@ album_create:
     requirements: { _method: post }
 
 album_edit:
-    pattern:    /edit{slug}
+    pattern:    /edit/{slug}
     defaults:   { _controller: foq_album.controller.album:editAction }
-    requirements: { _method: [get, head] }
+    requirements: { _method: "get|head" }
 
 album_update:
-    pattern:    /edit{slug}
+    pattern:    /edit/{slug}
     defaults:   { _controller: foq_album.controller.album:updateAction }
     requirements: { _method: post }
 
 album_delete:
-  pattern:  /delete{slug}
+  pattern:  /delete/{slug}
   defaults:  { _controller: foq_album.controller.album:deleteAction }
   requirements: { _method: delete }
 
@@ -34,11 +34,11 @@ album_publish:
   requirements: { _method: post }
 
 album_view:
-    pattern:    {slug}
+    pattern:    /{slug}
     defaults:   { _controller: foq_album.controller.album:viewAction }
-    requirements: { _method: [get, head], slug: "[\w\d-]+" }
+    requirements: { _method: "get|head", slug: "[\w\d-]+" }
 
 album_photo_view:
-    pattern: {albumSlug}{number}
+    pattern: /{albumSlug}/{number}
     defaults: { _controller: foq_album.controller.photo:viewAction }
-    requirements: { _method: [get, head], albumSlug: "[\w-]+", number: "\d+" }
+    requirements: { _method: "get|head", albumSlug: "[\w-]+", number: "\d+" }
