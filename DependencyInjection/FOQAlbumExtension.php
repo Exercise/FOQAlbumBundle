@@ -18,6 +18,7 @@ class FOQAlbumExtension extends Extension
         $loader->load('form.xml');
         $loader->load('publisher.xml');
         $loader->load('url_generator.xml');
+        $loader->load('provider.xml');
         $loader->load('twig.xml');
 
         $processor = new Processor();
