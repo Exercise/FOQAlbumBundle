@@ -27,7 +27,7 @@ abstract class Album implements AlbumInterface
      *
      * @var Collection
      * You must overwrite this mapping to set the target document to your user class
-     * // mongodb:ReferenceMany(targetDocument=Photo)
+     * // mongodb:ReferenceMany(targetDocument="Photo")
      */
     protected $photos = null;
 

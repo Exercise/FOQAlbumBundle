@@ -2,7 +2,6 @@
 
 namespace FOQ\AlbumBundle\Document;
 use FOQ\AlbumBundle\Model\PhotoInterface;
-use Symfony\Component\HttpFoundation\File\File;
 use DateTime;
 
 /**
@@ -23,7 +22,7 @@ abstract class Photo implements PhotoInterface
      *
      * @var AlbumInterface
      * You must overwrite this mapping to set the target document to your user class
-     * // mongodb:ReferenceOne(targetDocument=Album)
+     * // mongodb:ReferenceOne(targetDocument="Album")
      */
     protected $album = null;
 
@@ -81,22 +80,8 @@ abstract class Photo implements PhotoInterface
     public function setAlbum($album)
     {
         $this->album = $album;
+        $album->getPhotos()->add($this);
     }
-
-    /**
-     * Set the photo file
-     *
-     * @param File $file
-     * @return null
-     */
-    abstract public function setFile(File $file);
-
-    /**
-     * Get the photo web path (e.g. images/animals/turtle.jpg)
-     *
-     * @return string
-     */
-    abstract public function getWebPath();
 
     /**
      * @return string

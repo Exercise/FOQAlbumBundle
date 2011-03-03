@@ -2,6 +2,8 @@
 
 namespace FOQ\AlbumBundle\Model;
 
+use Symfony\Component\HttpFoundation\File\File;
+
 interface PhotoInterface
 {
     /**
