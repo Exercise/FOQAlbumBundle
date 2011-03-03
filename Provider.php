@@ -5,6 +5,7 @@ namespace FOQ\AlbumBundle;
 use FOS\UserBundle\Model\UserManagerInterface;
 use FOS\UserBundle\Model\User;
 use FOQ\AlbumBundle\Document\AlbumRepository;
+use FOQ\AlbumBundle\Document\PhotoRepository;
 use FOQ\AlbumBundle\Model\AlbumInterface;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Request;

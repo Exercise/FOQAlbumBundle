@@ -2,6 +2,7 @@
 
 namespace FOQ\AlbumBundle\Document;
 use FOQ\AlbumBundle\Model\PhotoInterface;
+use FOQ\AlbumBundle\Model\PhotoCollection;
 use DateTime;
 
 /**

@@ -10,7 +10,7 @@ class PhotoRepository extends DocumentRepository
 {
     public function createQueryByAlbum(AlbumInterface $album)
     {
-        return createQuery()
+        return $this->createQueryBuilder()
             ->field('album.$id')->equals(new MongoId($album->getId()))
         ;
     }
