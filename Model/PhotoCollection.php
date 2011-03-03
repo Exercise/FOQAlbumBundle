@@ -3,6 +3,7 @@
 namespace FOQ\AlbumBundle\Model;
 
 use FOQ\AlbumBundle\Model\CollectionWrapper;
+use FOQ\AlbumBundle\Document\Photo;
 
 class PhotoCollection extends CollectionWrapper
 {
@@ -48,7 +49,12 @@ class PhotoCollection extends CollectionWrapper
 
     protected function getNextPhotoNumber()
     {
-        $number = 1;
+        return $this->getHighestPhotoNumber() + 1;
+    }
+
+    protected function getHighestPhotoNumber()
+    {
+        $number = 0;
         foreach ($this->getValues() as $photo) {
             if ($photo->getNumber() > $number) {
                 $number = $photo->getNumber();
