@@ -38,13 +38,7 @@ class Provider
      */
     public function getAlbum($username, $slug)
     {
-        $user = $this->userManager->findUserByUsername($username);
-
-        if (empty($user)) {
-            throw new NotFoundHttpException(sprintf('The user "%s" does not exist', $username));
-        }
-
-        $album = $this->albumRepository->findOneByUserAndSlugForUser($user, $slug, $this->getAuthenticatedUser());
+        $album = $this->albumRepository->findOneByUserAndSlugForUser($this->getUser($username), $slug, $this->getAuthenticatedUser());
 
         if (empty($album)) {
             throw new NotFoundHttpException(sprintf('The album with user "%s" and slug "%s" does not exist or is not published', $username, $slug));
@@ -68,9 +62,9 @@ class Provider
      *
      * @return Paginator
      **/
-    public function getUserPaginatedAlbums(User $user)
+    public function getUserPaginatedAlbums($username)
     {
-        $this->paginate($this->albumRepository->createPublicUserSortedQuery($user, $this->getAuthenticatedUser()));
+        $this->paginate($this->albumRepository->createPublicUserSortedQuery($this->getUser($username), $this->getAuthenticatedUser()));
     }
 
     /**
@@ -81,6 +75,17 @@ class Provider
     public function getPhoto($username, $slug, $number)
     {
         return $this->findAlbum($username, $slug)->getPhotoByNumber($number);
+    }
+
+    protected function getUser($username)
+    {
+        $user = $this->userManager->findUserByUsername($username);
+
+        if (empty($user)) {
+            throw new NotFoundHttpException(sprintf('The user "%s" does not exist', $username));
+        }
+
+        return $user;
     }
 
     protected function getAuthenticatedUser()
