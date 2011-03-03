@@ -8,6 +8,7 @@ use FOQ\AlbumBundle\Document\AlbumRepository;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Request;
 use NotFoundException;
+use Doctrine\ODM\MongoDB\Query\Builder;
 use Zend\Paginator\Paginator;
 use ZendPaginatorAdapter\DoctrineMongoDBAdapter;
 
@@ -97,9 +98,7 @@ class Provider
     {
         $pager = new Paginator(new DoctrineMongoDBAdapter($query));
 
-        if ($request) {
-            $pager->setCurrentPageNumber($this->request->query->get('page'));
-        }
+        $pager->setCurrentPageNumber($this->request->query->get('page'));
         $pager->setItemCountPerPage(10);
         $pager->setPageRange(5);
 
