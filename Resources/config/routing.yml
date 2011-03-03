@@ -3,6 +3,11 @@ foq_album_index:
     defaults:   { _controller: foq_album.controller.album:indexAction }
     requirements: { _method: "get|head" }
 
+foq_album_album_by_user:
+    pattern:    /{username}
+    defaults:   { _controller: foq_album.controller.album:listByUserAction }
+    requirements: { _method: "get|head" }
+
 foq_album_album_new:
     pattern:    /add
     defaults:   { _controller: foq_album.controller.album:newAction }

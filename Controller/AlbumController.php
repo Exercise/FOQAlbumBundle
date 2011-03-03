@@ -11,14 +11,15 @@ class AlbumController extends ContainerAware
     public function indexAction()
     {
         return $this->getTemplating()->renderResponse('FOQAlbumBundle:Album:index.html.twig', array(
-            'albums' => $this->getProvider()->getPaginatedAlbums()
+            'albums' => $this->getProvider()->getAlbums()
         ));
     }
 
     public function listByUserAction($username)
     {
         return $this->getTemplating()->renderResponse('FOQAlbumBundle:Album:byUser.html.twig', array(
-            'albums' => $this->getProvider()->getUserPaginatedAlbums($username)
+            'albums' => $this->getProvider()->getUserAlbums($username),
+            'user'   => $this->container->get('fos_user.user_manager')->findUserByUsername($username)
         ));
     }
 

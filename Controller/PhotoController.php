@@ -2,18 +2,25 @@
 
 namespace FOQ\AlbumBundle\Controller;
 
-use FOQ\CommonBundle\Controller\Controller as ExerciseController;
-use FOQ\AlbumBundle\Document\Album;
+use Symfony\Component\DependencyInjection\ContainerAware;
+use FOQ\AlbumBundle\Model\AlbumInterface;
 use FOQ\AlbumBundle\Document\Photo;
 use Zend\Paginator\Paginator;
 use Zend\Paginator\Adapter\ArrayAdapter;
 
-use Symfony\Component\HttpKernel\Exception;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class PhotoFrontendController extends ExerciseController
+class PhotoController extends ContainerAware
 {
-    public function viewAction($albumSlug, $key)
+    public function listByAlbumAction(AlbumInterface $album)
+    {
+        return $this->getTemplating()->renderResponse('FOQAlbumBundle:Photo:byAlbum.html.twig', array(
+            'album'  => $album,
+            'photos' => $this->getProvider()->getAlbumPhotos($album)
+        ));
+    }
+
+    public function showAction($username, $slug, $number)
     {
         $album = $this->get('foq_album.repository.album')->findOneBySlug($albumSlug);
         if(!$album) {
@@ -37,26 +44,13 @@ class PhotoFrontendController extends ExerciseController
         ));
     }
 
-    public function listByAlbumAction(Album $album)
+    protected function getTemplating()
     {
-        $page = $this->get('request')->get('page', 1);
-        $numPerPage = 5;
-        $adapter = new ArrayAdapter($album->getPhotos()->toArray());
-        $pager = new Paginator($adapter);
-        $pager->setCurrentPageNumber($page);
-        $pager->setItemCountPerPage($numPerPage);
-        $pager->setPageRange(5);
-        $this->addAlbumBreadCrumb($album);
-
-        return $this->render('AlbumBundle:Frontend:photoListByAlbum.twig', array(
-            'album' => $album,
-            'photos' => $pager
-        ));
+        return $this->container->get('templating');
     }
 
-    protected function addAlbumBreadCrumb(Album $album)
+    protected function getProvider()
     {
-        $this->get('menu.crumb')->addChild('Albums', $this->generateUrl('album_index'));
-        $this->get('menu.crumb')->addChild($album->getTitle(), $this->generateUrl('album_view', array('slug' => $album->getSlug())));
+        return $this->container->get('foq_album.provider');
     }
 }

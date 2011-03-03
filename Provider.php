@@ -5,12 +5,14 @@ namespace FOQ\AlbumBundle;
 use FOS\UserBundle\Model\UserManagerInterface;
 use FOS\UserBundle\Model\User;
 use FOQ\AlbumBundle\Document\AlbumRepository;
+use FOQ\AlbumBundle\Model\AlbumInterface;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Request;
 use NotFoundException;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use Zend\Paginator\Paginator;
 use ZendPaginatorAdapter\DoctrineMongoDBAdapter;
+use Zend\Paginator\Adapter\ArrayAdapter;
 
 /**
  * High level object finder that uses the route parameters as method arguments
@@ -52,7 +54,7 @@ class Provider
      *
      * @return Paginator
      **/
-    public function getPaginatedAlbums()
+    public function getAlbums()
     {
         return $this->paginate($this->albumRepository->createPublicSortedQuery($this->getAuthenticatedUser()));
     }
@@ -62,9 +64,19 @@ class Provider
      *
      * @return Paginator
      **/
-    public function getUserPaginatedAlbums($username)
+    public function getUserAlbums($username)
     {
         $this->paginate($this->albumRepository->createPublicUserSortedQuery($this->getUser($username), $this->getAuthenticatedUser()));
+    }
+
+    /**
+     * Get a paginator of photos of an album
+     *
+     * @return Paginator
+     **/
+    public function getAlbumPhotos(AlbumInterface $album)
+    {
+        return $this->paginate($album->getPhotos()->toArray());
     }
 
     /**
@@ -99,14 +111,19 @@ class Provider
         }
     }
 
-    protected function paginate(Builder $query)
+    protected function paginate($data)
     {
-        $pager = new Paginator(new DoctrineMongoDBAdapter($query));
+        if ($data instanceof Builder) {
+            $adapter = new DoctrineMongoDBAdapter($data);
+        } else {
+            $adapter = new ArrayAdapter($data);
+        }
+        $paginator = new Paginator($adapter);
 
-        $pager->setCurrentPageNumber($this->request->query->get('page'));
-        $pager->setItemCountPerPage(10);
-        $pager->setPageRange(5);
+        $paginator->setCurrentPageNumber($this->request->query->get('page'));
+        $paginator->setItemCountPerPage(10);
+        $paginator->setPageRange(5);
 
-        return $pager;
+        return $paginator;
     }
 }

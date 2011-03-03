@@ -22,4 +22,13 @@ class UrlGenerator
             'slug'     => $album->getSlug()
         ), $absolute);
     }
+
+    public function getPhotoUrl($route, AlbumInterface $album, Photo $photo, $absolute = false)
+    {
+        return $this->generator->generate($route, array(
+            'username' => $album->getUser()->getUsernameCanonical(),
+            'slug'     => $album->getSlug(),
+            'number'   => $photo->getNumber()
+        ), $absolute);
+    }
 }
