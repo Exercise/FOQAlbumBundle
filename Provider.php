@@ -10,6 +10,7 @@ use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Request;
 use NotFoundException;
 use Doctrine\ODM\MongoDB\Query\Builder;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Zend\Paginator\Paginator;
 use ZendPaginatorAdapter\DoctrineMongoDBAdapter;
 use Zend\Paginator\Adapter\ArrayAdapter;
@@ -22,13 +23,15 @@ class Provider
     protected $albumRepository;
     protected $userManager;
     protected $securityContext;
+    protected $documentManager;
     protected $request;
 
-    public function __construct(AlbumRepository $albumRepository, UserManagerInterface $userManager, SecurityContext $securityContext, Request $request = null)
+    public function __construct(AlbumRepository $albumRepository, UserManagerInterface $userManager, SecurityContext $securityContext, DocumentManager $documentManager, Request $request = null)
     {
         $this->albumRepository = $albumRepository;
         $this->userManager     = $userManager;
         $this->securityContext = $securityContext;
+        $this->documentManager = $documentManager;
         $this->request         = $request;
     }
 
@@ -45,6 +48,8 @@ class Provider
         if (empty($album)) {
             throw new NotFoundHttpException(sprintf('The album with user "%s" and slug "%s" does not exist or is not published', $username, $slug));
         }
+
+        $this->incrementImpressions($album, md5('album'.$album->getId()));
 
         return $album;
     }
@@ -84,9 +89,27 @@ class Provider
      *
      * @return Photo
      **/
-    public function getPhoto($username, $slug, $number)
+    public function getPhoto(AlbumInterface $album, $number)
     {
-        return $this->findAlbum($username, $slug)->getPhotoByNumber($number);
+        $photo = $album->getPhotos()->getPhotoByNumber($number);
+
+        if (empty($photo)) {
+            throw new NotFoundHttpException(sprintf('The photo number "%s" does not exist in album "%s"', $number, $album->getTitle()));
+        }
+
+        $this->incrementImpressions($photo, md5('album'.$album->getId().$photo->getNumber()));
+
+        return $photo;
+
+    }
+
+    protected function incrementImpressions($object, $hash)
+    {
+        if(!$this->request->getSession()->has($hash)) {
+            $object->incrementImpressions();
+            $this->documentManager->flush();
+            $this->request->getSession()->set($hash, true);
+        }
     }
 
     protected function getUser($username)

@@ -13,6 +13,7 @@
             <argument type="service" id="foq_album.repository.album" />
             <argument type="service" id="fos_user.user_manager" />
             <argument type="service" id="security.context" />
+            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
             <argument type="service" id="request" />
         </service>
     </services>
