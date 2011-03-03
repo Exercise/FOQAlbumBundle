@@ -18,7 +18,7 @@ class UrlGenerator
     public function getAlbumUrl($route, AlbumInterface $album, $absolute = false)
     {
         return $this->generator->generate($route, array(
-            'username' => $album->getUser()->getUsername(),
+            'username' => $album->getUser()->getUsernameCanonical(),
             'slug'     => $album->getSlug()
         ), $absolute);
     }
