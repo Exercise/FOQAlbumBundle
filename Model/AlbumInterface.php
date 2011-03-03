@@ -10,78 +10,83 @@ interface AlbumInterface
     /**
      * @return string
      */
-    public function getSlug();
-
-    /**
-     * @param  string
-     * @return null
-     */
-    public function setSlug($slug);
+    function getId();
 
     /**
      * @return string
      */
-    public function getTitle();
+    function getSlug();
 
     /**
      * @param  string
      * @return null
      */
-    public function setTitle($title);
+    function setSlug($slug);
 
     /**
      * @return string
      */
-    public function getDescription();
+    function getTitle();
 
     /**
      * @param  string
      * @return null
      */
-    public function setDescription($description);
+    function setTitle($title);
+
+    /**
+     * @return string
+     */
+    function getDescription();
+
+    /**
+     * @param  string
+     * @return null
+     */
+    function setDescription($description);
 
     /**
      * @return bool
      */
-    public function getIsPublished();
+    function getIsPublished();
 
     /**
      * @param  bool
      * @return null
      */
-    public function setIsPublished($isPublished);
+    function setIsPublished($isPublished);
 
     /**
      * @return User
      */
-    public function getUser();
+    function getUser();
 
     /**
      * @param  User
      * @return null
      */
-    public function setUser(User $user);
+    function setUser(User $user);
 
     /**
      * @return PhotoCollection
      */
-    public function getPhotos();
+    function getPhotos();
 
-    public function setRank($rank);
+    function setRank($rank);
 
-    public function getCreatedAt();
+    function getCreatedAt();
 
-    public function getUpdatedAt();
+    function getUpdatedAt();
 
-    public function setUpdatedNow();
+    function setUpdatedNow();
 
     /**
      * @return int number of impressions
      */
-    public function getImpressions();
+    function getImpressions();
 
     /**
      * Increment the number of page impressions
      */
-    public function incrementImpressions();
+    function incrementImpressions();
 }

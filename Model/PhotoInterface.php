@@ -7,6 +7,11 @@ use Symfony\Component\HttpFoundation\File\File;
 interface PhotoInterface
 {
     /**
+     * @return string
+     */
+    function getId();
+
+    /**
      * Set the photo file
      *
      * @param File $file

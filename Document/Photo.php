@@ -67,6 +67,14 @@ abstract class Photo implements PhotoInterface
     }
 
     /**
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
      * @return AlbumInterface
      */
     public function getAlbum()
