@@ -46,4 +46,4 @@ foq_album_album_show:
 foq_album_photo_show:
     pattern: /{username}/{slug}/{number}
     defaults: { _controller: foq_album.controller.photo:showAction }
-    requirements: { _method: "get|head", albumSlug: "[\w-]+", number: "\d+" }
+    requirements: { _method: "get|head", slug: "[\w-]+", number: "\d+" }
