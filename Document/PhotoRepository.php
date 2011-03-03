@@ -3,15 +3,15 @@
 namespace FOQ\AlbumBundle\Document;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
+use FOQ\AlbumBundle\Model\AlbumInterface;
+use MongoId;
 
 class PhotoRepository extends DocumentRepository
 {
-    public function createQueryByAlbum(Album $album)
+    public function createQueryByAlbum(AlbumInterface $album)
     {
-        $id = new \MongoId($album->getId());
-
-        $query = $this->createQuery()->field('album.$id')->equals($id);
-
-        return $query;
+        return createQuery()
+            ->field('album.$id')->equals(new MongoId($album->getId()))
+        ;
     }
 }

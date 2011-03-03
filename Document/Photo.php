@@ -1,15 +1,32 @@
 <?php
 
 namespace FOQ\AlbumBundle\Document;
-use FOQ\ContentBundle\Document\Content;
+use FOQ\AlbumBundle\Model\PhotoInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use DateTime;
 
 /**
  * @mongodb:MappedSuperclass
  */
-abstract class Photo
+abstract class Photo implements PhotoInterface
 {
+    /**
+     * Document id
+     *
+     * @var string
+     * @mongodb:Id()
+     */
+    protected $id = null;
+
+    /**
+     * Album where the photo is
+     *
+     * @var AlbumInterface
+     * You must overwrite this mapping to set the target document to your user class
+     * // mongodb:ReferenceOne(targetDocument=Album)
+     */
+    protected $album = null;
+
     /**
      * Photo number in an album
      *
@@ -47,6 +64,23 @@ abstract class Photo
     public function __construct()
     {
         $this->createdAt = new DateTime();
+    }
+
+    /**
+     * @return AlbumInterface
+     */
+    public function getAlbum()
+    {
+        return $this->album;
+    }
+
+    /**
+     * @param  AlbumInterface
+     * @return null
+     */
+    public function setAlbum($album)
+    {
+        $this->album = $album;
     }
 
     /**
@@ -112,16 +146,6 @@ abstract class Photo
     public function getImpressions()
     {
         return $this->impressions;
-    }
-
-    /**
-     * Set the number of impressions
-     *
-     * @param int
-     **/
-    public function setImpressions($nb)
-    {
-        $this->impressions = $nb;
     }
 
     /**

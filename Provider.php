@@ -21,14 +21,16 @@ use Zend\Paginator\Adapter\ArrayAdapter;
 class Provider
 {
     protected $albumRepository;
+    protected $photoRepository;
     protected $userManager;
     protected $securityContext;
     protected $documentManager;
     protected $request;
 
-    public function __construct(AlbumRepository $albumRepository, UserManagerInterface $userManager, SecurityContext $securityContext, DocumentManager $documentManager, Request $request = null)
+    public function __construct(AlbumRepository $albumRepository, PhotoRepository $photoRepository, UserManagerInterface $userManager, SecurityContext $securityContext, DocumentManager $documentManager, Request $request = null)
     {
         $this->albumRepository = $albumRepository;
+        $this->photoRepository = $photoRepository;
         $this->userManager     = $userManager;
         $this->securityContext = $securityContext;
         $this->documentManager = $documentManager;
@@ -49,7 +51,7 @@ class Provider
             throw new NotFoundHttpException(sprintf('The album with user "%s" and slug "%s" does not exist or is not published', $username, $slug));
         }
 
-        $this->incrementImpressions($album, md5('album'.$album->getId()));
+        $this->incrementImpressions($album);
 
         return $album;
     }
@@ -81,7 +83,7 @@ class Provider
      **/
     public function getAlbumPhotos(AlbumInterface $album)
     {
-        return $this->paginate($album->getPhotos()->toArray());
+        return $this->paginate($this->photoRepository->createQueryByAlbum($album));
     }
 
     /**
@@ -91,20 +93,22 @@ class Provider
      **/
     public function getPhoto(AlbumInterface $album, $number)
     {
-        $photo = $album->getPhotos()->getPhotoByNumber($number);
+        $photo = $this->photoRepository->findOneByAlbumAndNumber($album, $number);
 
         if (empty($photo)) {
             throw new NotFoundHttpException(sprintf('The photo number "%s" does not exist in album "%s"', $number, $album->getTitle()));
         }
 
-        $this->incrementImpressions($photo, md5('album'.$album->getId().$photo->getNumber()));
+        $this->incrementImpressions($photo);
 
         return $photo;
 
     }
 
-    protected function incrementImpressions($object, $hash)
+    protected function incrementImpressions($object)
     {
+        $hash = md5(get_class($object).$object->getId());
+
         if(!$this->request->getSession()->has($hash)) {
             $object->incrementImpressions();
             $this->documentManager->flush();
