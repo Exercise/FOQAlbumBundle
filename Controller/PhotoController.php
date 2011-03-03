@@ -22,25 +22,9 @@ class PhotoController extends ContainerAware
 
     public function showAction($username, $slug, $number)
     {
-        $album = $this->get('foq_album.repository.album')->findOneBySlug($albumSlug);
-        if(!$album) {
-            throw new NotFoundHttpException(sprintf('Album "%s" does not exist', $albumSlug));
-        }
-        $photo = $album->getPhotoByKey($key);
-        if(!$photo) {
-            throw new NotFoundHttpException(sprintf('Photo "%s" does not exist in album "%s"', $key, $albumSlug));
-        }
-        $this->addAlbumBreadCrumb($album);
-        $viewKey = implode('|', array('AlbumPhoto', $album->getId(), $photo->getKey()));
-        if(!$this->get('session')->has($viewKey)) {
-            $photo->incrementImpressions();
-            $this->get('session')->set($viewKey, true);
-            $this->getOdm()->flush();
-        }
-
-        return $this->render('AlbumBundle:Frontend:photoView.twig', array(
-            'album' => $album,
-            'photo' => $photo
+        return $this->getTemplating()->renderResponse('FOQAlbumBundle:Photo:show.html.twig', array(
+            'album' => $album = $this->getProvider()->getAlbum($username, $slug),
+            'photo' => $this->getProvider()->getPhoto($album, $number)
         ));
     }
 
