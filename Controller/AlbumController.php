@@ -26,7 +26,7 @@ class AlbumController extends ContainerAware
     public function showAction($username, $slug)
     {
         return $this->getTemplating()->renderResponse('FOQAlbumBundle:Album:show.html.twig', array(
-            'album' => $this->getProvider()->getAlbum($username, $slug)
+            'album' => $this->getProvider()->getAlbum($username, $slug, true)
         ));
     }
 

@@ -24,7 +24,7 @@ class PhotoController extends ContainerAware
     {
         return $this->getTemplating()->renderResponse('FOQAlbumBundle:Photo:show.html.twig', array(
             'album' => $album = $this->getProvider()->getAlbum($username, $slug),
-            'photo' => $this->getProvider()->getPhoto($album, $number)
+            'photo' => $this->getProvider()->getPhoto($album, $number, true)
         ));
     }
 

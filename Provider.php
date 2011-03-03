@@ -44,7 +44,7 @@ class Provider
      * @throws NotFoundException if album does not exist
      * @return AlbumInterface
      */
-    public function getAlbum($username, $slug)
+    public function getAlbum($username, $slug, $incrementImpressions = false)
     {
         $album = $this->albumRepository->findOneByUserAndSlugForUser($this->getUser($username), $slug, $this->getAuthenticatedUser());
 
@@ -52,7 +52,9 @@ class Provider
             throw new NotFoundHttpException(sprintf('The album with user "%s" and slug "%s" does not exist or is not published', $username, $slug));
         }
 
-        $this->incrementImpressions($album);
+        if ($incrementImpressions) {
+            $this->incrementImpressions($album);
+        }
 
         return $album;
     }
@@ -92,15 +94,17 @@ class Provider
      *
      * @return Photo
      **/
-    public function getPhoto(AlbumInterface $album, $number)
+    public function getPhoto(AlbumInterface $album, $number, $incrementImpressions = false)
     {
-        $photo = $this->photoRepository->findOneByAlbumAndNumber($album, $number);
+        $photo = $album->getPhotos()->getPhotoByNumber($number);
 
         if (empty($photo)) {
             throw new NotFoundHttpException(sprintf('The photo number "%s" does not exist in album "%s"', $number, $album->getTitle()));
         }
 
-        $this->incrementImpressions($photo);
+        if ($incrementImpressions) {
+            $this->incrementImpressions($photo);
+        }
 
         return $photo;
 
