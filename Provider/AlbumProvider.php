@@ -81,8 +81,6 @@ class AlbumProvider extends AbstractProvider
      **/
     public function createAlbum()
     {
-        $albumClass = $this->albumRepository->getDocumentName();
-
-        return new $albumClass();
+        return $this->albumRepository->createNewAlbum();
     }
 }

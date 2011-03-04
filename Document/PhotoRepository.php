@@ -14,4 +14,11 @@ class PhotoRepository extends DocumentRepository
             ->field('album.$id')->equals(new MongoId($album->getId()))
         ;
     }
+
+    public function createNewPhoto()
+    {
+        $photoClass = $this->getDocumentName();
+
+        return new $photoClass();
+    }
 }

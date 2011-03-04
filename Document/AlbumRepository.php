@@ -53,4 +53,11 @@ class AlbumRepository extends DocumentRepository
 
         return $query;
     }
+
+    public function createNewAlbum()
+    {
+        $albumClass = $this->getDocumentName();
+
+        return new $albumClass();
+    }
 }

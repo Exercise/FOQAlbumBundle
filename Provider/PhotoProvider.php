@@ -75,8 +75,6 @@ class PhotoProvider extends AbstractProvider
      **/
     public function createPhoto()
     {
-        $photoClass = $this->photoRepository->getDocumentName();
-
-        return new $photoClass();
+        return $this->photoRepository->createNewPhoto();
     }
 }
