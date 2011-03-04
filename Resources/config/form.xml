@@ -10,11 +10,19 @@
     </parameters>
 
     <services>
-        <service id="foq_album.form.album" class="%foq_album.form.album.class%">
+        <service id="foq_album.form.album" factory-method="create" factory-class="%foq_album.form.album.class%" class="%foq_album.form.album.class%" scope="request">
+            <argument type="service" id="form.context" />
             <argument>%foq_album.form.album.name%</argument>
-            <argument></argument>
-            <argument type="service" id="validator" />
-            <argument type="collection"></argument>
+            <argument type="collection" />
+            <call method="setRequest">
+                <argument type="service" id="request" />
+            </call>
+            <call method="setProvider">
+                <argument type="service" id="foq_album.provider" />
+            </call>
+            <call method="setObjectManager">
+                <argument type="service" id="foq_album.object_manager" />
+            </call>
         </service>
     </services>
 
