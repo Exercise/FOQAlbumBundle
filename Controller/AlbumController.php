@@ -7,6 +7,8 @@ use FOQ\AlbumBundle\Model\AlbumInterface;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+
 
 class AlbumController extends ContainerAware
 {
@@ -62,6 +64,9 @@ class AlbumController extends ContainerAware
     public function deleteAction($username, $slug)
     {
         $album = $this->getProvider()->getAlbum($username, $slug);
+        if ($album->getUser() !== $this->container->get('foq_album.security_helper')->getUser()) {
+            throw new AccessDeniedException();
+        }
         $this->container->get('foq_album.deleter.album')->delete($album);
         $this->container->get('foq_album.object_manager')->flush();
 
@@ -71,6 +76,9 @@ class AlbumController extends ContainerAware
     public function publishAction($username, $slug)
     {
         $album = $this->getProvider()->getAlbum($username, $slug);
+        if ($album->getUser() !== $this->container->get('foq_album.security_helper')->getUser()) {
+            throw new AccessDeniedException();
+        }
         $this->container->get('foq_album.publisher.album')->publish($album);
         $this->container->get('foq_album.object_manager')->flush();
 
