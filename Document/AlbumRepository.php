@@ -8,6 +8,15 @@ use MongoId;
 
 class AlbumRepository extends DocumentRepository
 {
+    public function findOneByUserAndSlug(User $user, $slug)
+    {
+        return $this->createQueryBuilder()
+            ->field('user.$id')->equals(new MongoId($user->getId()))
+            ->field('slug')->equals($slug)
+            ->getQuery()
+            ->getSingleResult();
+    }
+
     public function findOneByUserAndSlugForUser(User $user, $slug, User $forUser = null)
     {
         return $this->createPublishedOrOwnQuery($forUser)
