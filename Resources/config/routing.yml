@@ -13,7 +13,7 @@ foq_album_album_create:
     defaults:   { _controller: foq_album.controller.album:createAction }
     requirements: { _method: post }
 
-foq_album_album_album_edit:
+foq_album_album_edit:
     pattern:    /edit/{username}/{slug}
     defaults:   { _controller: foq_album.controller.album:editAction }
     requirements: { _method: "get|head" }
