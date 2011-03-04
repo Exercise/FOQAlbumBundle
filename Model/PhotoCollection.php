@@ -7,12 +7,6 @@ use FOQ\AlbumBundle\Document\Photo;
 
 class PhotoCollection extends CollectionWrapper
 {
-    public function add($photo)
-    {
-        $photo->setNumber($this->getNextPhotoNumber());
-        parent::add($photo);
-    }
-
     public function getPhotoByNumber($number)
     {
         foreach($this->getValues() as $photo) {
@@ -47,7 +41,7 @@ class PhotoCollection extends CollectionWrapper
         return $this->get($this->indexOf($photo)+1);
     }
 
-    protected function getNextPhotoNumber()
+    public function getNextPhotoNumber()
     {
         return $this->getHighestPhotoNumber() + 1;
     }
