@@ -111,6 +111,14 @@ abstract class Album implements AlbumInterface
      */
     protected $updatedAt;
 
+    /**
+     * Date of first publication
+     *
+     * @var DateTime
+     * @mongodb:Field(type="date")
+     */
+    protected $publishedAt = null;
+
     public function __construct()
     {
         $this->photos    = new ArrayCollection();
@@ -231,6 +239,23 @@ abstract class Album implements AlbumInterface
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getPublishedAt()
+    {
+        return $this->publishedAt;
+    }
+
+    /**
+     * @param  DateTime
+     * @return null
+     */
+    public function setPublishedAt(DateTime $publishedAt)
+    {
+        $this->publishedAt = $publishedAt;
     }
 
     public function setUpdatedNow()

@@ -57,6 +57,17 @@ interface AlbumInterface
     function setIsPublished($isPublished);
 
     /**
+     * @return DateTime
+     */
+    function getPublishedAt();
+
+    /**
+     * @param  DateTime
+     * @return null
+     */
+    function setPublishedAt(DateTime $publishedAt);
+
+    /**
      * @return User
      */
     function getUser();
