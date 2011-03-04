@@ -5,6 +5,7 @@ namespace FOQ\AlbumBundle\Controller;
 use Symfony\Component\DependencyInjection\ContainerAware;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class AlbumController extends ContainerAware
 {
@@ -35,8 +36,11 @@ class AlbumController extends ContainerAware
      */
     public function newAction()
     {
-        return $this->getTemplating()->renderResponse('FOQAlbunBundle:Album:new.html.twig', array(
-            'form' => $this->container->get('fos_user.form.user')
+        $form = $this->container->get('foq_album.form.album');
+        $form->process();
+
+        return $this->getTemplating()->renderResponse('FOQAlbumBundle:Album:new.html.twig', array(
+            'form' => $form
         ));
     }
 
@@ -45,15 +49,14 @@ class AlbumController extends ContainerAware
      */
     public function createAction()
     {
-        $form = $this->container->get('fos_user.form.user');
-
-        $process = $form->process(null, $this->container->getParameter('fos_user.email.confirmation.enabled'));
-        if ($process) {
+        $form = $this->container->get('foq_album.form.album');
+        if ($form->process()) {
+            $this->container->get('foq_album.object_manager')->flush();
             $this->setFlash('foq_album_album_create', 'success');
-            return new RedirectResponse($this->container->get('foq_album.url_generator')->getUrlForAlbum($form->getData()));
+            return new RedirectResponse($this->container->get('foq_album.url_generator')->getAlbumUrl('foq_album_album_show', $form->getData()));
         }
 
-        return $this->container->get('templating')->renderResponse('FOQUserBundle:User:new.html.twig', array('form' => $form));
+        return $this->container->get('templating')->renderResponse('FOQAlbumBundle:Album:new.html.twig', array('form' => $form));
     }
 
     public function publishAction($username, $slug)
