@@ -6,6 +6,8 @@
 
     <services>
 
+        <service id="foq_album.object_manager" alias="doctrine.odm.mongodb.document_manager" />
+
         <service
             id="foq_album.repository.album"
             class="%foq_album.model.album.class%"
