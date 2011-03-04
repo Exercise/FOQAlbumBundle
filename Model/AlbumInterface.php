@@ -97,8 +97,6 @@ interface AlbumInterface
      **/
     function updateCount();
 
-    function setRank($rank);
-
     function getCreatedAt();
 
     function getUpdatedAt();

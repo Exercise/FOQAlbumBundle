@@ -78,14 +78,6 @@ abstract class Album implements AlbumInterface
     protected $count = 0;
 
     /**
-     * Position of the album (less is first)
-     *
-     * @var int
-     * @mongodb:Field(type="int")
-     */
-    protected $rank = 0;
-
-    /**
      * Whether or not the album is visible
      *
      * @var bool
@@ -244,11 +236,6 @@ abstract class Album implements AlbumInterface
     public function updateCount()
     {
         $this->count = $this->getPhotos()->count();
-    }
-
-    public function setRank($rank)
-    {
-        $this->rank = $rank;
     }
 
     public function getCreatedAt()
