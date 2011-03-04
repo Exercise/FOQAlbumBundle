@@ -2,8 +2,8 @@
 
 namespace FOQ\AlbumBundle;
 
-use FOQ\Model\AlbumInterface;
-use FOQ\Model\PhotoInterface;
+use FOQ\AlbumBundle\Model\AlbumInterface;
+use FOQ\AlbumBundle\Model\PhotoInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
 
 class PhotoAdder
@@ -12,7 +12,7 @@ class PhotoAdder
 
     public function __construct(DocumentManager $objectManager)
     {
-        $this->objectManager = objectManager;
+        $this->objectManager = $objectManager;
     }
 
     public function add(AlbumInterface $album, PhotoInterface $photo)
