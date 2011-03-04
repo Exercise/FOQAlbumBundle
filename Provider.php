@@ -74,7 +74,7 @@ class Provider
      **/
     public function getUserAlbums($username)
     {
-        $this->paginate($this->albumRepository->createPublicUserSortedQuery($this->getUser($username), $this->securityHelper->getUser()));
+        return $this->paginate($this->albumRepository->createPublicUserSortedQuery($this->getUser($username), $this->securityHelper->getUser()));
     }
 
     /**
