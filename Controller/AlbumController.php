@@ -65,7 +65,7 @@ class AlbumController extends ContainerAware
         $this->container->get('foq_album.deleter.album')->delete($album);
         $this->container->get('foq_album.object_manager')->flush();
 
-        return new RedirectResponse($this->container->get('router')->generate('foq_album_album_index'));
+        return new RedirectResponse($this->container->get('router')->generate('foq_album_index'));
     }
 
     public function publishAction($username, $slug)

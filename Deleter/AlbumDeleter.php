@@ -3,6 +3,7 @@
 namespace FOQ\AlbumBundle\Deleter;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
+use FOQ\AlbumBundle\Model\AlbumInterface;
 
 class AlbumDeleter
 {
