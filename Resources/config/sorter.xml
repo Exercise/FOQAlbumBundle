@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://www.symfony-project.org/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.symfony-project.org/schema/dic/services http://www.symfony-project.org/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="foq_album.sorter.album.class">FOQ\AlbumBundle\Sorter\AlbumSorter</parameter>
+        <parameter key="foq_album.sorter.photo.class">FOQ\AlbumBundle\Sorter\PhotoSorter</parameter>
+    </parameters>
+
+    <services>
+        <service id="foq_album.sorter.album" class="%foq_album.sorter.album.class%" scope="request">
+            <argument type="service" id="request" />
+        </service>
+        <service id="foq_album.sorter.photo" class="%foq_album.sorter.photo.class%" scope="request">
+            <argument type="service" id="request" />
+        </service>
+    </services>
+
+</container>

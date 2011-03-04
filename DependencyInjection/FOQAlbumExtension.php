@@ -20,6 +20,7 @@ class FOQAlbumExtension extends Extension
         $loader->load('url_generator.xml');
         $loader->load('provider.xml');
         $loader->load('adder.xml');
+        $loader->load('sorter.xml');
         $loader->load('deleter.xml');
         $loader->load('twig.xml');
         $loader->load('security.xml');
