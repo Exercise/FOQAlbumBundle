@@ -50,13 +50,13 @@ class AlbumForm extends Form
     public function process(AlbumInterface $album = null)
     {
         if (!$user = $this->securityHelper->getUser()) {
-            throw new InsufficientAuthenticationException();
+            throw new InsufficientAuthenticationException('You need to log in to create an album');
         }
         if (null === $album) {
             $album = $this->provider->createAlbum();
             $album->setUser($user);
         } else if (!$user->is($album->getUser())) {
-            throw new InsufficientAuthenticationException();
+            throw new InsufficientAuthenticationException('You do not own this album');
         }
 
         $this->setData($album);
