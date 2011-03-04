@@ -7,10 +7,10 @@ use Symfony\Component\Form\TextField;
 use Symfony\Component\Form\TextareaField;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\SecurityContext;
 
 use FOQ\AlbumBundle\Model\AlbumInterface;
 use FOQ\AlbumBundle\Provider\AlbumProvider;
+use FOQ\AlbumBundle\SecurityHelper;
 
 use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationException;
 
@@ -36,7 +36,7 @@ class AlbumForm extends Form
         $this->objectManager = $objectManager;
     }
 
-    public function setSecurityHelper($securityHelper)
+    public function setSecurityHelper(SecurityHelper $securityHelper)
     {
         $this->securityHelper = $securityHelper;
     }

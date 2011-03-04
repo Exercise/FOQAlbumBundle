@@ -6,9 +6,9 @@ use FOQ\AlbumBundle\Model\AlbumInterface;
 
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-
 
 class AlbumController extends ContainerAware
 {
@@ -96,7 +96,8 @@ class AlbumController extends ContainerAware
     {
         $album = $this->getProvider()->getAlbum($username, $slug);
         $this->checkAlbumOwning($album);
-        $this->container->get('foq_album.uploader')->upload($album, $this->request->files->get('file'));
+        $file = $this->container->get('request')->files->get('file');
+        $this->container->get('foq_album.uploader')->upload($album, $file);
         $this->container->get('foq_album.object_manager')->flush();
 
         return new Response('ok');
