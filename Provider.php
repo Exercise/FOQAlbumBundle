@@ -7,7 +7,7 @@ use FOQ\AlbumBundle\Document\AlbumRepository;
 use FOQ\AlbumBundle\Document\PhotoRepository;
 use FOQ\AlbumBundle\Model\AlbumInterface;
 use Symfony\Component\HttpFoundation\Request;
-use NotFoundException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Zend\Paginator\Paginator;
