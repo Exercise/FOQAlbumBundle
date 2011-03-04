@@ -5,17 +5,24 @@
     xsi:schemaLocation="http://www.symfony-project.org/schema/dic/services http://www.symfony-project.org/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="foq_album.provider.class">FOQ\AlbumBundle\Provider</parameter>
+        <parameter key="foq_album.provider.album.class">FOQ\AlbumBundle\Provider\AlbumProvider</parameter>
+        <parameter key="foq_album.provider.photo.class">FOQ\AlbumBundle\Provider\PhotoProvider</parameter>
     </parameters>
 
     <services>
-        <service id="foq_album.provider" class="%foq_album.provider.class%" scope="request">
+        <service id="foq_album.provider.album" class="%foq_album.provider.album.class%" scope="request">
             <argument type="service" id="foq_album.repository.album" />
-            <argument type="service" id="foq_album.repository.photo" />
             <argument type="service" id="fos_user.user_manager" />
             <argument type="service" id="foq_album.security_helper" />
             <argument type="service" id="foq_album.object_manager" />
             <argument type="service" id="foq_album.sorter.album" />
+            <argument type="service" id="request" />
+        </service>
+        <service id="foq_album.provider.photo" class="%foq_album.provider.photo.class%" scope="request">
+            <argument type="service" id="foq_album.repository.photo" />
+            <argument type="service" id="fos_user.user_manager" />
+            <argument type="service" id="foq_album.security_helper" />
+            <argument type="service" id="foq_album.object_manager" />
             <argument type="service" id="foq_album.sorter.photo" />
             <argument type="service" id="request" />
         </service>
