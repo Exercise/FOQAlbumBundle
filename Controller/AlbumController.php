@@ -59,6 +59,15 @@ class AlbumController extends ContainerAware
         return $this->container->get('templating')->renderResponse('FOQAlbumBundle:Album:new.html.twig', array('form' => $form));
     }
 
+    public function deleteAction($username, $slug)
+    {
+        $album = $this->getProvider()->getAlbum($username, $slug);
+        $this->container->get('foq_album.deleter.album')->delete($album);
+        $this->container->get('foq_album.object_manager')->flush();
+
+        return new RedirectResponse($this->container->get('router')->generate('foq_album_album_index'));
+    }
+
     public function publishAction($username, $slug)
     {
         $album = $this->getProvider()->getAlbum($username, $slug);
