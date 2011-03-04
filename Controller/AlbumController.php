@@ -65,9 +65,7 @@ class AlbumController extends ContainerAware
     public function deleteAction($username, $slug)
     {
         $album = $this->getProvider()->getAlbum($username, $slug);
-        if ($album->getUser() !== $this->container->get('foq_album.security_helper')->getUser()) {
-            throw new AccessDeniedException();
-        }
+        $this->checkAlbumOwning($album);
         $this->container->get('foq_album.deleter.album')->delete($album);
         $this->container->get('foq_album.object_manager')->flush();
 
@@ -77,13 +75,31 @@ class AlbumController extends ContainerAware
     public function publishAction($username, $slug)
     {
         $album = $this->getProvider()->getAlbum($username, $slug);
-        if ($album->getUser() !== $this->container->get('foq_album.security_helper')->getUser()) {
-            throw new AccessDeniedException();
-        }
+        $this->checkAlbumOwning($album);
         $this->container->get('foq_album.publisher.album')->publish($album);
         $this->container->get('foq_album.object_manager')->flush();
 
         return new RedirectResponse($this->getAlbumUrl($album));
+    }
+
+    public function uploadAction($username, $slug)
+    {
+        $album = $this->getProvider()->getAlbum($username, $slug);
+        $this->checkAlbumOwning($album);
+
+        return $this->container->get('templating')->renderResponse('FOQAlbumBundle:Album:upload.html.twig', array(
+            'album' => $album
+        ));
+    }
+
+    public function uploadCallbackAction($username, $slug)
+    {
+        $album = $this->getProvider()->getAlbum($username, $slug);
+        $this->checkAlbumOwning($album);
+        $this->container->get('foq_album.uploader')->upload($album, $this->request->files->get('file'));
+        $this->container->get('foq_album.object_manager')->flush();
+
+        return new Response('ok');
     }
 
     protected function setFlash($action, $value)
@@ -104,5 +120,12 @@ class AlbumController extends ContainerAware
     protected function getAlbumUrl(AlbumInterface $album)
     {
         return $this->container->get('foq_album.url_generator')->getAlbumUrl('foq_album_album_show', $album);
+    }
+
+    protected function checkAlbumOwning(AlbumInterface $album)
+    {
+        if ($album->getUser() !== $this->container->get('foq_album.security_helper')->getUser()) {
+            throw new AccessDeniedException();
+        }
     }
 }

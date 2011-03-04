@@ -13,6 +13,16 @@ foq_album_album_edit:
     defaults:   { _controller: foq_album.controller.album:editAction }
     requirements: { _method: "get|head|post" }
 
+foq_album_album_upload:
+    pattern:    /-/upload/{username}/{slug}
+    defaults:   { _controller: foq_album.controller.album:uploadAction }
+    requirements: { _method: "get|head|post" }
+
+foq_album_album_upload_callback:
+    pattern:    /-/upload-callback/{username}/{slug}
+    defaults:   { _controller: foq_album.controller.album:uploadCallbackAction }
+    requirements: { _method: "get|head|post" }
+
 foq_album_album_delete:
     pattern:  /-/delete/{username}/{slug}
     defaults:  { _controller: foq_album.controller.album:deleteAction }
