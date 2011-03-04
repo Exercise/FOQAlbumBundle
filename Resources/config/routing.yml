@@ -4,22 +4,22 @@ foq_album_index:
     requirements: { _method: "get|head" }
 
 foq_album_album_new:
-    pattern:    /add
+    pattern:    /-/add
     defaults:   { _controller: foq_album.controller.album:newAction }
     requirements: { _method: "get|head|post" }
 
 foq_album_album_edit:
-    pattern:    /edit/{username}/{slug}
+    pattern:    /-/edit/{username}/{slug}
     defaults:   { _controller: foq_album.controller.album:editAction }
     requirements: { _method: "get|head|post" }
 
 foq_album_album_delete:
-  pattern:  /delete/{username}/{slug}
-  defaults:  { _controller: foq_album.controller.album:deleteAction }
+    pattern:  /-/delete/{username}/{slug}
+    defaults:  { _controller: foq_album.controller.album:deleteAction }
 
 foq_album_album_publish:
-  pattern:  /publish/{username}/{slug}
-  defaults:  { _controller: foq_album.controller.album:publishAction }
+    pattern:  /-/publish/{username}/{slug}
+    defaults:  { _controller: foq_album.controller.album:publishAction }
 
 foq_album_album_by_user:
     pattern:    /{username}
