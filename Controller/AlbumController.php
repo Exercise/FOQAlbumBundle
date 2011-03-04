@@ -98,7 +98,7 @@ class AlbumController extends ContainerAware
 
     protected function getProvider()
     {
-        return $this->container->get('foq_album.provider');
+        return $this->container->get('foq_album.provider.album');
     }
 
     protected function getAlbumUrl(AlbumInterface $album)
