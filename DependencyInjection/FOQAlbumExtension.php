@@ -22,6 +22,7 @@ class FOQAlbumExtension extends Extension
         $loader->load('adder.xml');
         $loader->load('deleter.xml');
         $loader->load('twig.xml');
+        $loader->load('security.xml');
 
         $processor = new Processor();
         $configuration = new Configuration();
