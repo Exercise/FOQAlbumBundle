@@ -2,8 +2,9 @@
 
 namespace FOQ\AlbumBundle\Controller;
 
-use Symfony\Component\DependencyInjection\ContainerAware;
+use FOQ\AlbumBundle\Model\AlbumInterface;
 
+use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -31,29 +32,28 @@ class AlbumController extends ContainerAware
         ));
     }
 
-    /**
-     * Show the new form
-     */
     public function newAction()
     {
         $form = $this->container->get('foq_album.form.album');
-        $form->process();
 
-        return $this->getTemplating()->renderResponse('FOQAlbumBundle:Album:new.html.twig', array(
-            'form' => $form
-        ));
-    }
-
-    /**
-     * Create a user and send a confirmation email
-     */
-    public function createAction()
-    {
-        $form = $this->container->get('foq_album.form.album');
         if ($form->process()) {
             $this->container->get('foq_album.object_manager')->flush();
-            $this->setFlash('foq_album_album_create', 'success');
-            return new RedirectResponse($this->container->get('foq_album.url_generator')->getAlbumUrl('foq_album_album_show', $form->getData()));
+
+            return new RedirectResponse($this->getAlbumUrl($form->getData()));
+        }
+
+        return $this->container->get('templating')->renderResponse('FOQAlbumBundle:Album:new.html.twig', array('form' => $form));
+    }
+
+    public function editAction($username, $slug)
+    {
+        $album = $this->getProvider()->getAlbum($username, $slug);
+        $form  = $this->container->get('foq_album.form.album');
+
+        if ($form->process($album)) {
+            $this->container->get('foq_album.object_manager')->flush();
+
+            return new RedirectResponse($this->getAlbumUrl($album));
         }
 
         return $this->container->get('templating')->renderResponse('FOQAlbumBundle:Album:new.html.twig', array('form' => $form));
@@ -61,22 +61,11 @@ class AlbumController extends ContainerAware
 
     public function publishAction($username, $slug)
     {
-        $album = $this->findAlbum($username, $slug);
-
+        $album = $this->getProvider()->getAlbum($username, $slug);
         $this->container->get('foq_album.publisher.album')->publish($album);
         $this->container->get('foq_album.object_manager')->flush();
 
-        return new RedirectResponse($this->container->get('foq_album.url_generator')->getUrlForAlbum($form->getData()));
-    }
-
-    public function unPublishAction($username, $slug)
-    {
-        $album = $this->findAlbum($username, $slug);
-
-        $this->container->get('foq_album.publisher.album')->unPublish($album);
-        $this->container->get('foq_album.object_manager')->flush();
-
-        return new RedirectResponse($this->container->get('foq_album.url_generator')->getUrlForAlbum($form->getData()));
+        return new RedirectResponse($this->getAlbumUrl($album));
     }
 
     protected function getSortFieldInfo($sortBy = null, $optionalFields = null)
@@ -121,5 +110,10 @@ class AlbumController extends ContainerAware
     protected function getProvider()
     {
         return $this->container->get('foq_album.provider');
+    }
+
+    protected function getAlbumUrl(AlbumInterface $album)
+    {
+        return $this->container->get('foq_album.url_generator')->getAlbumUrl('foq_album_album_show', $album);
     }
 }

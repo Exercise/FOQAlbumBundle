@@ -58,6 +58,7 @@ class AlbumForm extends Form
 
             if ($this->isValid()) {
                 $this->objectManager->persist($album);
+                $this->request->getSession()->setFlash('foq_album_album_create', 'success');
                 return true;
             }
         }
