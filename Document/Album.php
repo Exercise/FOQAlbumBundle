@@ -226,6 +226,26 @@ abstract class Album implements AlbumInterface
         return new PhotoCollection($this->photos ?: $this->photos = new ArrayCollection());
     }
 
+    /**
+     * Gets number of photos
+     *
+     * @return int
+     **/
+    public function getCount()
+    {
+        return $this->count;
+    }
+
+    /**
+     * Update number of photos
+     *
+     * @return null
+     **/
+    public function updateCount()
+    {
+        $this->count = $this->getPhotos()->count();
+    }
+
     public function setRank($rank)
     {
         $this->rank = $rank;

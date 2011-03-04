@@ -83,6 +83,20 @@ interface AlbumInterface
      */
     function getPhotos();
 
+    /**
+     * Gets number of photos
+     *
+     * @return int
+     **/
+    function getCount();
+
+    /**
+     * Update number of photos
+     *
+     * @return null
+     **/
+    function updateCount();
+
     function setRank($rank);
 
     function getCreatedAt();
