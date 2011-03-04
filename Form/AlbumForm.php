@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
 
 use FOQ\AlbumBundle\Model\AlbumInterface;
-use FOQ\AlbumBundle\Provider;
+use FOQ\AlbumBundle\Provider\AlbumProvider;
 
 use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationException;
 
@@ -26,7 +26,7 @@ class AlbumForm extends Form
         $this->request = $request;
     }
 
-    public function setProvider(Provider $provider)
+    public function setProvider(AlbumProvider $provider)
     {
         $this->provider = $provider;
     }

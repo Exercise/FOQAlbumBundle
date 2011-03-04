@@ -18,7 +18,7 @@
                 <argument type="service" id="request" />
             </call>
             <call method="setProvider">
-                <argument type="service" id="foq_album.provider" />
+                <argument type="service" id="foq_album.provider.album" />
             </call>
             <call method="setSecurityHelper">
                 <argument type="service" id="foq_album.security_helper" />
