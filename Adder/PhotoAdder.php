@@ -1,6 +1,6 @@
 <?php
 
-namespace FOQ\AlbumBundle;
+namespace FOQ\AlbumBundle\Adder;
 
 use FOQ\AlbumBundle\Model\AlbumInterface;
 use FOQ\AlbumBundle\Model\PhotoInterface;
