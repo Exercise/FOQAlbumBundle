@@ -9,7 +9,7 @@
     </parameters>
 
     <services>
-        <service id="foq_album.uploader" class="%foq_album.uploaderclass%">
+        <service id="foq_album.uploader" class="%foq_album.uploader.class%">
             <argument type="service" id="foq_album.adder.photo" />
             <argument type="service" id="foq_album.provider.photo" />
         </service>
