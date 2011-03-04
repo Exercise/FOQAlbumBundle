@@ -6,6 +6,8 @@ use FOS\UserBundle\Model\UserManagerInterface;
 use FOQ\AlbumBundle\Document\AlbumRepository;
 use FOQ\AlbumBundle\Document\PhotoRepository;
 use FOQ\AlbumBundle\Model\AlbumInterface;
+use FOQ\AlbumBundle\Sorter\AlbumSorter;
+use FOQ\AlbumBundle\Sorter\PhotoSorter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Doctrine\ODM\MongoDB\Query\Builder;
@@ -24,15 +26,19 @@ class Provider
     protected $userManager;
     protected $securityHelper;
     protected $documentManager;
+    protected $albumSorter;
+    protected $photoSorter;
     protected $request;
 
-    public function __construct(AlbumRepository $albumRepository, PhotoRepository $photoRepository, UserManagerInterface $userManager, SecurityHelper $securityHelper, DocumentManager $documentManager, Request $request = null)
+    public function __construct(AlbumRepository $albumRepository, PhotoRepository $photoRepository, UserManagerInterface $userManager, SecurityHelper $securityHelper, DocumentManager $documentManager, AlbumSorter $albumSorter, PhotoSorter $photoSorter, Request $request = null)
     {
         $this->albumRepository = $albumRepository;
         $this->photoRepository = $photoRepository;
         $this->userManager     = $userManager;
         $this->securityHelper  = $securityHelper;
         $this->documentManager = $documentManager;
+        $this->albumSorter     = $albumSorter;
+        $this->photoSorter     = $photoSorter;
         $this->request         = $request;
     }
 
@@ -64,7 +70,7 @@ class Provider
      **/
     public function getAlbums()
     {
-        return $this->paginate($this->albumRepository->createPublicSortedQuery($this->securityHelper->getUser()));
+        return $this->paginate($this->albumRepository->createPublicSortedQuery($this->securityHelper->getUser(), $this->albumSorter->getDatabaseOrder()));
     }
 
     /**
@@ -74,7 +80,7 @@ class Provider
      **/
     public function getUserAlbums($username)
     {
-        return $this->paginate($this->albumRepository->createPublicUserSortedQuery($this->getUser($username), $this->securityHelper->getUser()));
+        return $this->paginate($this->albumRepository->createPublicUserSortedQuery($this->getUser($username), $this->securityHelper->getUser(), $this->albumSorter->getDatabaseOrder()));
     }
 
     /**
@@ -84,7 +90,7 @@ class Provider
      **/
     public function getAlbumPhotos(AlbumInterface $album)
     {
-        return $this->paginate($this->photoRepository->createQueryByAlbum($album));
+        return $this->paginate($this->photoRepository->createQueryByAlbum($album), $this->photoSorter->getDatabaseOrder());
     }
 
     /**

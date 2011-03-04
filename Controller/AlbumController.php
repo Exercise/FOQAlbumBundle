@@ -15,7 +15,8 @@ class AlbumController extends ContainerAware
     public function indexAction()
     {
         return $this->getTemplating()->renderResponse('FOQAlbumBundle:Album:index.html.twig', array(
-            'albums' => $this->getProvider()->getAlbums()
+            'albums' => $this->getProvider()->getAlbums(),
+            'sortBy' => $this->container->get('foq_album.sorter.album')->getRequestSortField()
         ));
     }
 
@@ -83,35 +84,6 @@ class AlbumController extends ContainerAware
         $this->container->get('foq_album.object_manager')->flush();
 
         return new RedirectResponse($this->getAlbumUrl($album));
-    }
-
-    protected function getSortFieldInfo($sortBy = null, $optionalFields = null)
-    {
-        $sortData = array(
-            'date' => array(
-                'field' => 'publishedAt',
-                'order' => 'desc'
-            ),
-            'views' => array(
-                'field' => 'impressions',
-                'order' => 'desc'
-            ),
-            'comments' => array(
-                'field' => 'commentCount',
-                'order' => 'desc'
-            ),
-
-        );
-
-        if($optionalFields) {
-            $sortData = array_merge($sortData, $optionalFields);
-        }
-
-        if ($sortBy && isset($sortData[$sortBy])) {
-            return $sortData[$sortBy];
-        } else {
-            return $sortData['date'];
-        }
     }
 
     protected function setFlash($action, $value)

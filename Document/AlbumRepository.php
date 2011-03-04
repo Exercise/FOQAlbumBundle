@@ -17,17 +17,17 @@ class AlbumRepository extends DocumentRepository
             ->getSingleResult();
     }
 
-    public function createPublicSortedQuery(User $forUser = null)
+    public function createPublicSortedQuery(User $forUser = null, array $sortOrder = array('date', 'desc'))
     {
         return $this->createPublishedOrOwnQuery($forUser)
-            ->sort('rank', 'ASC');
+            ->sort($sortOrder['field'], $sortOrder['order']);
     }
 
-    public function createPublicUserSortedQuery(User $user, User $forUser = null)
+    public function createPublicUserSortedQuery(User $user, User $forUser = null, array $sortOrder = array('date', 'desc'))
     {
         return $this->createPublishedOrOwnQuery($forUser)
             ->field('user.$id')->equals(new MongoId($user->getId()))
-            ->sort('rank', 'ASC');
+            ->sort($sortOrder['field'], $sortOrder['order']);
     }
 
     public function createPublishedOrOwnQuery(User $user = null)
