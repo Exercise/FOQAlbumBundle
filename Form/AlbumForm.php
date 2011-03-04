@@ -19,6 +19,7 @@ class AlbumForm extends Form
     protected $request;
     protected $provider;
     protected $objectManager;
+    protected $securityHelper;
 
     public function setRequest(Request $request)
     {
@@ -35,6 +36,11 @@ class AlbumForm extends Form
         $this->objectManager = $objectManager;
     }
 
+    public function setSecurityHelper($securityHelper)
+    {
+        $this->securityHelper = $securityHelper;
+    }
+
     public function configure()
     {
         $this->add(new TextField('title'));
@@ -43,13 +49,15 @@ class AlbumForm extends Form
 
     public function process(AlbumInterface $album = null)
     {
-        if (null === $album) {
-            $album = $this->provider->createAlbum();
-        }
-        if (!$user = $this->provider->getAuthenticatedUser()) {
+        if (!$user = $this->securityHelper->getUser()) {
             throw new InsufficientAuthenticationException();
         }
-        $album->setUser($user);
+        if (null === $album) {
+            $album = $this->provider->createAlbum();
+            $album->setUser($user);
+        } else if (!$user->is($album->getUser())) {
+            throw new InsufficientAuthenticationException();
+        }
 
         $this->setData($album);
 

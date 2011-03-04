@@ -3,11 +3,9 @@
 namespace FOQ\AlbumBundle;
 
 use FOS\UserBundle\Model\UserManagerInterface;
-use FOS\UserBundle\Model\User;
 use FOQ\AlbumBundle\Document\AlbumRepository;
 use FOQ\AlbumBundle\Document\PhotoRepository;
 use FOQ\AlbumBundle\Model\AlbumInterface;
-use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Request;
 use NotFoundException;
 use Doctrine\ODM\MongoDB\Query\Builder;
@@ -24,16 +22,16 @@ class Provider
     protected $albumRepository;
     protected $photoRepository;
     protected $userManager;
-    protected $securityContext;
+    protected $securityHelper;
     protected $documentManager;
     protected $request;
 
-    public function __construct(AlbumRepository $albumRepository, PhotoRepository $photoRepository, UserManagerInterface $userManager, SecurityContext $securityContext, DocumentManager $documentManager, Request $request = null)
+    public function __construct(AlbumRepository $albumRepository, PhotoRepository $photoRepository, UserManagerInterface $userManager, SecurityHelper $securityHelper, DocumentManager $documentManager, Request $request = null)
     {
         $this->albumRepository = $albumRepository;
         $this->photoRepository = $photoRepository;
         $this->userManager     = $userManager;
-        $this->securityContext = $securityContext;
+        $this->securityHelper  = $securityHelper;
         $this->documentManager = $documentManager;
         $this->request         = $request;
     }
@@ -46,7 +44,7 @@ class Provider
      */
     public function getAlbum($username, $slug, $incrementImpressions = false)
     {
-        $album = $this->albumRepository->findOneByUserAndSlugForUser($this->getUser($username), $slug, $this->getAuthenticatedUser());
+        $album = $this->albumRepository->findOneByUserAndSlugForUser($this->getUser($username), $slug, $this->securityHelper->getUser());
 
         if (empty($album)) {
             throw new NotFoundHttpException(sprintf('The album with user "%s" and slug "%s" does not exist or is not published', $username, $slug));
@@ -66,7 +64,7 @@ class Provider
      **/
     public function getAlbums()
     {
-        return $this->paginate($this->albumRepository->createPublicSortedQuery($this->getAuthenticatedUser()));
+        return $this->paginate($this->albumRepository->createPublicSortedQuery($this->securityHelper->getUser()));
     }
 
     /**
@@ -76,7 +74,7 @@ class Provider
      **/
     public function getUserAlbums($username)
     {
-        $this->paginate($this->albumRepository->createPublicUserSortedQuery($this->getUser($username), $this->getAuthenticatedUser()));
+        $this->paginate($this->albumRepository->createPublicUserSortedQuery($this->getUser($username), $this->securityHelper->getUser()));
     }
 
     /**
@@ -154,17 +152,6 @@ class Provider
         $photoClass = $this->photoRepository->getDocumentName();
 
         return new $photoClass();
-    }
-
-    public function getAuthenticatedUser()
-    {
-        if ($token = $this->securityContext->getToken()) {
-            if ($user = $token->getUser()) {
-                if ($user instanceof User) {
-                    return $user;
-                }
-            }
-        }
     }
 
     protected function paginate($data)

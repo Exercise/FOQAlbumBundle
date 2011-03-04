@@ -20,7 +20,6 @@ foq_album_album_delete:
 foq_album_album_publish:
   pattern:  /publish/{username}/{slug}
   defaults:  { _controller: foq_album.controller.album:publishAction }
-  requirements: { _method: post }
 
 foq_album_album_by_user:
     pattern:    /{username}

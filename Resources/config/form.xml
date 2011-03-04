@@ -20,6 +20,9 @@
             <call method="setProvider">
                 <argument type="service" id="foq_album.provider" />
             </call>
+            <call method="setSecurityHelper">
+                <argument type="service" id="foq_album.security_helper" />
+            </call>
             <call method="setObjectManager">
                 <argument type="service" id="foq_album.object_manager" />
             </call>
