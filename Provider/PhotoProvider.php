@@ -18,7 +18,7 @@ use Zend\Paginator\Adapter\ArrayAdapter;
 /**
  * High level object finder that uses the route parameters as method arguments
  */
-class PhotoProvider
+class PhotoProvider extends AbstractProvider
 {
     protected $photoRepository;
     protected $userManager;
