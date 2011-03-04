@@ -15,20 +15,20 @@ class UrlGenerator
         $this->generator = $router->getGenerator();
     }
 
-    public function getAlbumUrl($route, AlbumInterface $album, $absolute = false)
+    public function getAlbumUrl($route, AlbumInterface $album, array $parameters = array(), $absolute = false)
     {
-        return $this->generator->generate($route, array(
+        return $this->generator->generate($route, array_merge($parameters, array(
             'username' => $album->getUser()->getUsernameCanonical(),
             'slug'     => $album->getSlug()
-        ), $absolute);
+        )), $absolute);
     }
 
-    public function getPhotoUrl($route, AlbumInterface $album, Photo $photo, $absolute = false)
+    public function getPhotoUrl($route, AlbumInterface $album, Photo $photo, array $parameters = array(), $absolute = false)
     {
-        return $this->generator->generate($route, array(
+        return $this->generator->generate($route, array_merge($parameters, array(
             'username' => $album->getUser()->getUsernameCanonical(),
             'slug'     => $album->getSlug(),
             'number'   => $photo->getNumber()
-        ), $absolute);
+        )), $absolute);
     }
 }
