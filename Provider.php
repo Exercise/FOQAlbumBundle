@@ -156,7 +156,7 @@ class Provider
         return new $photoClass();
     }
 
-    protected function getAuthenticatedUser()
+    public function getAuthenticatedUser()
     {
         if ($token = $this->securityContext->getToken()) {
             if ($user = $token->getUser()) {
