@@ -132,6 +132,30 @@ class Provider
         return $user;
     }
 
+    /**
+     * Returns a new album instance
+     *
+     * @return AlbumInterface
+     **/
+    public function createAlbum()
+    {
+        $albumClass = $this->albumRepository->getDocumentName();
+
+        return new $albumClass();
+    }
+
+    /**
+     * Returns a new photo instance
+     *
+     * @return PhotoInterface
+     **/
+    public function createPhoto()
+    {
+        $photoClass = $this->photoRepository->getDocumentName();
+
+        return new $photoClass();
+    }
+
     protected function getAuthenticatedUser()
     {
         if ($token = $this->securityContext->getToken()) {
