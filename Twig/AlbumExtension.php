@@ -36,9 +36,9 @@ class AlbumExtension extends Twig_Extension
      *
      * @return UrlGenerator
      */
-    public function getAlbumUrl($route, AlbumInterface $album, $absolute = false)
+    public function getAlbumUrl($route, AlbumInterface $album, array $parameters = array(), $absolute = false)
     {
-        return $this->urlGenerator->getAlbumUrl($route, $album, $absolute);
+        return $this->urlGenerator->getAlbumUrl($route, $album, $parameters, $absolute);
     }
 
     /**
