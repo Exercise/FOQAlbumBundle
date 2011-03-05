@@ -4,7 +4,7 @@ namespace FOQ\AlbumBundle;
 
 use Symfony\Component\Routing\Router;
 use FOQ\AlbumBundle\Model\AlbumInterface;
-use FOQ\AlbumBundle\Document\Photo;
+use FOQ\AlbumBundle\Model\PhotoInterface;
 
 class UrlGenerator
 {
@@ -23,11 +23,11 @@ class UrlGenerator
         )), $absolute);
     }
 
-    public function getPhotoUrl($route, AlbumInterface $album, Photo $photo, array $parameters = array(), $absolute = false)
+    public function getPhotoUrl($route, PhotoInterface $photo, array $parameters = array(), $absolute = false)
     {
         return $this->generator->generate($route, array_merge($parameters, array(
-            'username' => $album->getUser()->getUsernameCanonical(),
-            'slug'     => $album->getSlug(),
+            'username' => $photo->getAlbum()->getUser()->getUsernameCanonical(),
+            'slug'     => $photo->getAlbum()->getSlug(),
             'number'   => $photo->getNumber()
         )), $absolute);
     }

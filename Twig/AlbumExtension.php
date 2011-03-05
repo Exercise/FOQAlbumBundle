@@ -4,7 +4,7 @@ namespace FOQ\AlbumBundle\Twig;
 
 use FOQ\AlbumBundle\UrlGenerator;
 use FOQ\AlbumBundle\Model\AlbumInterface;
-use FOQ\AlbumBundle\Document\Photo;
+use FOQ\AlbumBundle\Model\PhotoInterface;
 use Symfony\Component\Security\Core\SecurityContext;
 use Twig_Function_Method;
 use Twig_Extension;
@@ -46,9 +46,9 @@ class AlbumExtension extends Twig_Extension
      *
      * @return UrlGenerator
      */
-    public function getPhotoUrl($route, AlbumInterface $album, Photo $photo, $absolute = false)
+    public function getPhotoUrl($route, PhotoInterface $photo, array $parameters = array(), $absolute = false)
     {
-        return $this->urlGenerator->getPhotoUrl($route, $album, $photo, $absolute);
+        return $this->urlGenerator->getPhotoUrl($route, $photo, $parameters, $absolute);
     }
 
     /**
