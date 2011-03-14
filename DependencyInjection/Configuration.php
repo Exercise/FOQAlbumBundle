@@ -52,9 +52,12 @@ class Configuration
             ->arrayNode('service')
                 ->addDefaultsIfNotSet()
                 ->arrayNode('publisher')
-                    ->isRequired()
                     ->addDefaultsIfNotSet()
                     ->scalarNode('album')->cannotBeEmpty()->defaultValue('foq_album.publisher.album.default')->end()
+                ->end()
+                ->arrayNode('adder')
+                    ->addDefaultsIfNotSet()
+                    ->scalarNode('photo')->cannotBeEmpty()->defaultValue('foq_album.adder.photo.default')->end()
                 ->end()
             ->end();
     }

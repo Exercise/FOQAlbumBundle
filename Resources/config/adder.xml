@@ -4,12 +4,8 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="foq_album.adder.photo.class">FOQ\AlbumBundle\Adder\PhotoAdder</parameter>
-    </parameters>
-
     <services>
-        <service id="foq_album.adder.photo" class="%foq_album.adder.photo.class%">
+        <service id="foq_album.adder.photo.default" class="FOQ\AlbumBundle\Adder\PhotoAdder">
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
         </service>
     </services>

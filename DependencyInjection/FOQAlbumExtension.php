@@ -38,6 +38,7 @@ class FOQAlbumExtension extends Extension
         ));
 
         $container->setAlias('foq_album.publisher.album', $config['service']['publisher']['album']);
+        $container->setAlias('foq_album.adder.photo', $config['service']['adder']['photo']);
     }
 
     protected function remapParameters(array $config, ContainerBuilder $container, array $map)
