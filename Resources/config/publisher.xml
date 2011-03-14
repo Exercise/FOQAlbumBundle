@@ -9,8 +9,7 @@
     </parameters>
 
     <services>
-        <service id="foq_album.publisher.album" class="%foq_album.publisher.album.class%">
-        </service>
+        <service id="foq_album.publisher.album.default" class="%foq_album.publisher.album.class%" public="false" />
     </services>
 
 </container>

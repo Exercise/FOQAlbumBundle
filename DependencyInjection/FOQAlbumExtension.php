@@ -36,6 +36,8 @@ class FOQAlbumExtension extends Extension
             'form'       => 'foq_album.form.%s.class',
             'controller' => 'foq_album.controller.%s.class',
         ));
+
+        $container->setAlias('foq_album.publisher.album', $config['service']['publisher']['album']);
     }
 
     protected function remapParameters(array $config, ContainerBuilder $container, array $map)
