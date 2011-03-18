@@ -2,7 +2,7 @@
 
 namespace FOQ\AlbumBundle\DependencyInjection;
 
-use Symfony\Component\Config\Definition\Builder\NodeBuilder;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
 /**
@@ -21,44 +21,52 @@ class Configuration
     public function getConfigTree()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('foq_album', 'array');
-
-        $this->addClassSection($rootNode);
-
-        return $treeBuilder->buildTree();
-    }
-
-    private function addClassSection(NodeBuilder $node)
-    {
-        $node
+        $treeBuilder->root('foq_album', 'array')->children()
             ->arrayNode('class')
                 ->isRequired()
-                ->arrayNode('model')
-                    ->isRequired()
-                    ->scalarNode('album')->isRequired()->end()
-                    ->scalarNode('photo')->isRequired()->end()
-                ->end()
-                ->arrayNode('form')
-                    ->addDefaultsIfNotSet()
-                    ->scalarNode('album')->cannotBeEmpty()->defaultValue('FOQ\\AlbumBundle\\Form\\AlbumForm')->end()
-                    ->scalarNode('photo')->cannotBeEmpty()->defaultValue('FOQ\\AlbumBundle\\Form\\PhotoForm')->end()
-                ->end()
-                ->arrayNode('controller')
-                    ->addDefaultsIfNotSet()
-                    ->scalarNode('album')->cannotBeEmpty()->defaultValue('FOQ\\AlbumBundle\\Controller\\AlbumController')->end()
-                    ->scalarNode('photo')->cannotBeEmpty()->defaultValue('FOQ\\AlbumBundle\\Controller\\PhotoController')->end()
+                ->children()
+                    ->arrayNode('model')
+                        ->isRequired()
+                        ->children()
+                            ->scalarNode('album')->isRequired()->end()
+                            ->scalarNode('photo')->isRequired()->end()
+                        ->end()
+                    ->end()
+                    ->arrayNode('form')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('album')->cannotBeEmpty()->defaultValue('FOQ\\AlbumBundle\\Form\\AlbumForm')->end()
+                            ->scalarNode('photo')->cannotBeEmpty()->defaultValue('FOQ\\AlbumBundle\\Form\\PhotoForm')->end()
+                        ->end()
+                    ->end()
+                    ->arrayNode('controller')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('album')->cannotBeEmpty()->defaultValue('FOQ\\AlbumBundle\\Controller\\AlbumController')->end()
+                            ->scalarNode('photo')->cannotBeEmpty()->defaultValue('FOQ\\AlbumBundle\\Controller\\PhotoController')->end()
+                        ->end()
+                    ->end()
                 ->end()
             ->end()
             ->arrayNode('service')
                 ->addDefaultsIfNotSet()
-                ->arrayNode('publisher')
-                    ->addDefaultsIfNotSet()
-                    ->scalarNode('album')->cannotBeEmpty()->defaultValue('foq_album.publisher.album.default')->end()
+                ->children()
+                    ->arrayNode('publisher')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('album')->cannotBeEmpty()->defaultValue('foq_album.publisher.album.default')->end()
+                        ->end()
+                    ->end()
+                    ->arrayNode('adder')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('photo')->cannotBeEmpty()->defaultValue('foq_album.adder.photo.default')->end()
+                        ->end()
+                    ->end()
                 ->end()
-                ->arrayNode('adder')
-                    ->addDefaultsIfNotSet()
-                    ->scalarNode('photo')->cannotBeEmpty()->defaultValue('foq_album.adder.photo.default')->end()
-                ->end()
-            ->end();
+            ->end()
+        ->end();
+
+        return $treeBuilder->buildTree();
     }
 }
