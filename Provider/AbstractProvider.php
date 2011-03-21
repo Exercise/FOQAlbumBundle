@@ -33,7 +33,7 @@ abstract class AbstractProvider
         return $user;
     }
 
-    protected function paginate($data, $page)
+    protected function paginate($data)
     {
         if ($data instanceof Builder) {
             $adapter = new DoctrineMongoDBAdapter($data);
@@ -42,7 +42,7 @@ abstract class AbstractProvider
         }
         $paginator = new Paginator($adapter);
 
-        $paginator->setCurrentPageNumber($page);
+        $paginator->setCurrentPageNumber($this->request->get('page', 1));
         $paginator->setItemCountPerPage(2);
         $paginator->setPageRange(5);
 

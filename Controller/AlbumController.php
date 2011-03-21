@@ -15,7 +15,7 @@ class AlbumController extends ContainerAware
     public function indexAction()
     {
         return $this->getTemplating()->renderResponse('FOQAlbumBundle:Album:index.html.twig', array(
-            'albums' => $this->getProvider()->getAlbums($this->container->get('request')->query->get('page', 1)),
+            'albums' => $this->getProvider()->getAlbums(),
             'sortBy' => $this->container->get('foq_album.sorter.album')->getRequestSortField()
         ));
     }
@@ -23,7 +23,7 @@ class AlbumController extends ContainerAware
     public function listByUserAction($username)
     {
         return $this->getTemplating()->renderResponse('FOQAlbumBundle:Album:byUser.html.twig', array(
-            'albums' => $this->getProvider()->getUserAlbums($username, $this->container->get('request')->query->get('page', 1)),
+            'albums' => $this->getProvider()->getUserAlbums($username),
             'user'   => $this->container->get('fos_user.user_manager')->findUserByUsername($username)
         ));
     }
@@ -32,7 +32,6 @@ class AlbumController extends ContainerAware
     {
         return $this->getTemplating()->renderResponse('FOQAlbumBundle:Album:show.html.twig', array(
             'album'  => $this->getProvider()->getAlbum($username, $slug, true),
-            'page'   => $this->container->get('request')->query->get('page', 1),
             'sortBy' => $this->container->get('foq_album.sorter.album')->getRequestSortField()
         ));
     }

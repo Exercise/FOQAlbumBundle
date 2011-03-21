@@ -59,9 +59,9 @@ class AlbumProvider extends AbstractProvider
      *
      * @return Paginator
      **/
-    public function getAlbums($page)
+    public function getAlbums()
     {
-        return $this->paginate($this->albumRepository->createPublicSortedQuery($this->securityHelper->getUser(), $this->albumSorter->getDatabaseOrder()), $page);
+        return $this->paginate($this->albumRepository->createPublicSortedQuery($this->securityHelper->getUser(), $this->albumSorter->getDatabaseOrder()));
     }
 
     /**
@@ -69,9 +69,9 @@ class AlbumProvider extends AbstractProvider
      *
      * @return Paginator
      **/
-    public function getUserAlbums($username, $page)
+    public function getUserAlbums($username)
     {
-        return $this->paginate($this->albumRepository->createPublicUserSortedQuery($this->getUser($username), $this->securityHelper->getUser(), $this->albumSorter->getDatabaseOrder()), $page);
+        return $this->paginate($this->albumRepository->createPublicUserSortedQuery($this->getUser($username), $this->securityHelper->getUser(), $this->albumSorter->getDatabaseOrder()));
     }
 
     /**

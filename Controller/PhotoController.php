@@ -12,11 +12,16 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PhotoController extends ContainerAware
 {
-    public function listByAlbumAction(AlbumInterface $album, $page)
+    public function listByAlbumAction(AlbumInterface $album, $page = 1)
     {
+        /**
+         * Because subrequests loose the query parameters
+         */
+        $this->container->get('request')->query->set('page', $page);
+
         return $this->getTemplating()->renderResponse('FOQAlbumBundle:Photo:byAlbum.html.twig', array(
             'album'  => $album,
-            'photos' => $this->getProvider()->getAlbumPhotos($album, $page)
+            'photos' => $this->getProvider()->getAlbumPhotos($album)
         ));
     }
 
