@@ -42,9 +42,9 @@ class PhotoProvider extends AbstractProvider
      *
      * @return Paginator
      **/
-    public function getAlbumPhotos(AlbumInterface $album)
+    public function getAlbumPhotos(AlbumInterface $album, $page)
     {
-        return $this->paginate($this->photoRepository->createQueryByAlbum($album), $this->photoSorter->getDatabaseOrder());
+        return $this->paginate($this->photoRepository->createQueryByAlbum($album, $this->photoSorter->getDatabaseOrder()), $page);
     }
 
     /**
