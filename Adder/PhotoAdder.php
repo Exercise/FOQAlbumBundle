@@ -19,7 +19,6 @@ class PhotoAdder
     {
         $photo->setNumber($album->getPhotos()->getNextPhotoNumber());
         $photo->setAlbum($album);
-        $album->getPhotos()->add($photo);
         $album->updateCount();
         $album->setUpdatedNow();
 
