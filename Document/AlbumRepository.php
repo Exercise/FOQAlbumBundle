@@ -26,6 +26,24 @@ class AlbumRepository extends DocumentRepository
             ->getSingleResult();
     }
 
+    public function findByUser(User $user, $limit = null)
+    {
+        $query = $this->createQueryByUser($user);
+        if($limit) {
+            $query->limit($limit);
+        }
+        return $query->getQuery()->execute();
+    }
+
+    public function findPublishedByUser(User $user, $limit = null)
+    {
+        $query = $this->createPublishedQueryByUser($user);
+        if($limit) {
+            $query->limit($limit);
+        }
+        return $query->getQuery()->execute();
+    }
+
     public function createPublicSortedQuery(User $forUser = null, array $sortOrder = array('date', 'desc'))
     {
         return $this->createPublishedOrOwnQuery($forUser)
@@ -50,6 +68,20 @@ class AlbumRepository extends DocumentRepository
         } else {
             $query->field('published')->equals(true);
         }
+
+        return $query;
+    }
+
+    public function createPublishedQueryByUser(User $user)
+    {
+        return $this->createQueryByUser($user)->field('published')->equals(true);
+    }
+
+    public function createQueryByUser(User $user)
+    {
+        $query = $this->createQueryBuilder();
+
+        $query->field('user.$id')->equals(new MongoId($user->getId()));
 
         return $query;
     }
