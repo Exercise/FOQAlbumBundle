@@ -7,9 +7,6 @@
     <parameters>
         <parameter key="foq_album.provider.album.class">FOQ\AlbumBundle\Provider\AlbumProvider</parameter>
         <parameter key="foq_album.provider.photo.class">FOQ\AlbumBundle\Provider\PhotoProvider</parameter>
-
-        <parameter key="foq_album.provider.item_count_per_page">10</parameter>
-        <parameter key="foq_album.provider.page_range">5</parameter>
     </parameters>
 
     <services>
