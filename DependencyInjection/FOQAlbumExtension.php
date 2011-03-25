@@ -39,7 +39,7 @@ class FOQAlbumExtension extends Extension
 
         $container->setAlias('foq_album.publisher.album', $config['service']['publisher']['album']);
         $container->setAlias('foq_album.adder.photo', $config['service']['adder']['photo']);
-        
+
         if ($container->hasDefinition('foq_album.provider.album') || $container->hasDefinition('foq_album.provider.photo')) {
             foreach (array('item_count_per_page', 'page_range') as $key) {
                 if (isset($config['pagination'][$key])) {
