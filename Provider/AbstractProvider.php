@@ -26,7 +26,7 @@ abstract class AbstractProvider
         return $this->pageRange;
     }
     
-    public function setItemCountPerPage($pageRange) {
+    public function setPageRange($pageRange) {
         $this->pageRange = $pageRange;
     }
     

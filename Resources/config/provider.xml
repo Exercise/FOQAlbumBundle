@@ -7,6 +7,9 @@
     <parameters>
         <parameter key="foq_album.provider.album.class">FOQ\AlbumBundle\Provider\AlbumProvider</parameter>
         <parameter key="foq_album.provider.photo.class">FOQ\AlbumBundle\Provider\PhotoProvider</parameter>
+        
+        <parameter key="foq_album.provider.item_count_per_page">10</parameter>
+        <parameter key="foq_album.provider.page_range">5</parameter>
     </parameters>
 
     <services>
@@ -17,6 +20,12 @@
             <argument type="service" id="foq_album.object_manager" />
             <argument type="service" id="foq_album.sorter.album" />
             <argument type="service" id="request" />
+            <call method="setItemCountPerPage">
+                <argument>%foq_album.provider.item_count_per_page%</argument>
+            </call>
+            <call method="setPageRange">
+                <argument>%foq_album.provider.page_range%</argument>
+            </call>
         </service>
         <service id="foq_album.provider.photo" class="%foq_album.provider.photo.class%" scope="request">
             <argument type="service" id="foq_album.repository.photo" />
@@ -25,6 +34,12 @@
             <argument type="service" id="foq_album.object_manager" />
             <argument type="service" id="foq_album.sorter.photo" />
             <argument type="service" id="request" />
+            <call method="setItemCountPerPage">
+                <argument>%foq_album.provider.item_count_per_page%</argument>
+            </call>
+            <call method="setPageRange">
+                <argument>%foq_album.provider.page_range%</argument>
+            </call>
         </service>
     </services>
 
