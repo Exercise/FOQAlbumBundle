@@ -16,7 +16,7 @@ abstract class AbstractProvider
 
     public function getItemCountPerPage()
     {
-        return $this->$itemCountPerPage;
+        return $this->itemCountPerPage;
     }
     public function setItemCountPerPage($itemCountPerPage)
     {
