@@ -11,6 +11,25 @@ use Zend\Paginator\Adapter\ArrayAdapter;
 
 abstract class AbstractProvider
 {
+    protected $itemCountPerPage;
+    protected $pageRange;
+    
+    public function getItemCountPerPage() {
+        return $this->$itemCountPerPage;
+    }
+    
+    public function setItemCountPerPage($itemCountPerPage) {
+        $this->itemCountPerPage = $itemCountPerPage;
+    }
+    
+    public function getPageRange() {
+        return $this->pageRange;
+    }
+    
+    public function setItemCountPerPage($pageRange) {
+        $this->pageRange = $pageRange;
+    }
+    
     protected function incrementImpressions($object)
     {
         $hash = md5(get_class($object).$object->getId());
@@ -43,8 +62,8 @@ abstract class AbstractProvider
         $paginator = new Paginator($adapter);
 
         $paginator->setCurrentPageNumber($this->request->get('page', 1));
-        $paginator->setItemCountPerPage(2);
-        $paginator->setPageRange(5);
+        $paginator->setItemCountPerPage($this->getItemCountPerPage());
+        $paginator->setPageRange($this->getPageRange());
 
         return $paginator;
     }
