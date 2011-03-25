@@ -65,6 +65,13 @@ class Configuration
                     ->end()
                 ->end()
             ->end()
+            ->arrayNode('pagination')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->scalarNode('item_count_per_page')->defaultValue(10)->end()
+                    ->scalarNode('page_range')->defaultValue(5)->end()
+                ->end()
+            ->end()
         ->end();
 
         return $treeBuilder->buildTree();
