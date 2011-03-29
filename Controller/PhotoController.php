@@ -19,7 +19,7 @@ class PhotoController extends ContainerAware
          */
         $this->container->get('request')->query->set('page', $page);
 
-        return $this->getTemplating()->renderResponse('FOQAlbumBundle:Photo:byAlbum.html.twig', array(
+        return $this->getTemplating()->renderResponse('FOQAlbum:Photo:byAlbum.html.twig', array(
             'album'  => $album,
             'photos' => $this->getProvider()->getAlbumPhotos($album)
         ));
@@ -27,7 +27,7 @@ class PhotoController extends ContainerAware
 
     public function showAction($username, $slug, $number)
     {
-        return $this->getTemplating()->renderResponse('FOQAlbumBundle:Photo:show.html.twig', array(
+        return $this->getTemplating()->renderResponse('FOQAlbum:Photo:show.html.twig', array(
             'album' => $album = $this->getProvider()->getAlbum($username, $slug),
             'photo' => $this->getProvider()->getPhoto($album, $number, true)
         ));
