@@ -25,6 +25,7 @@ class FOQAlbumExtension extends Extension
         $loader->load('twig.xml');
         $loader->load('security.xml');
         $loader->load('uploader.xml');
+        $loader->load('validator.xml');
 
         $processor = new Processor();
         $configuration = new Configuration();
@@ -39,6 +40,8 @@ class FOQAlbumExtension extends Extension
 
         $container->setAlias('foq_album.publisher.album', $config['service']['publisher']['album']);
         $container->setAlias('foq_album.adder.photo', $config['service']['adder']['photo']);
+        $container->setAlias('foq_album.validator.image', $config['service']['validator']['image']);
+        $container->setAlias('foq_album.constraint_factory.image', $config['service']['constraint_factory']['image']);
 
         foreach (array('item_count_per_page', 'page_range') as $key) {
             $container->setParameter('foq_album.provider.' . $key, $config['pagination'][$key]);
