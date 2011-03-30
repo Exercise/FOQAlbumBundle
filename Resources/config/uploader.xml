@@ -12,6 +12,8 @@
         <service id="foq_album.uploader" class="%foq_album.uploader.class%">
             <argument type="service" id="foq_album.adder.photo" />
             <argument type="service" id="foq_album.repository.photo" />
+            <argument type="service" id="foq_album.validator.image" />
+            <argument type="service" id="foq_album.constraint_factory.image" />
         </service>
     </services>
 

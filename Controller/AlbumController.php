@@ -9,6 +9,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use FOQ\AlbumBundle\Validator\Exception\InvalidImageException;
 
 class AlbumController extends ContainerAware
 {
@@ -98,7 +99,11 @@ class AlbumController extends ContainerAware
         $album = $this->getProvider()->getAlbum($username, $slug);
         $this->checkAlbumOwning($album);
         $file = $this->container->get('request')->files->get('file');
-        $this->container->get('foq_album.uploader')->upload($album, $file);
+        try {
+            $this->container->get('foq_album.uploader')->upload($album, $file);
+        } catch (InvalidImageException $e) {
+            return new Response($e->getMessage());
+        }
         $this->container->get('foq_album.object_manager')->flush();
 
         return new Response('ok');
