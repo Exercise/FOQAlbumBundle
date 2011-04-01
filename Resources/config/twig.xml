@@ -9,7 +9,7 @@
     </parameters>
 
     <services>
-        <service id="foq_album.twig.extension.album" class="%foq_album.twig.extension.album.class%">
+        <service id="foq_album.twig.extension.album" class="%foq_album.twig.extension.album.class%" public="false">
             <argument type="service" id="foq_album.url_generator" />
             <tag name="twig.extension" />
         </service>
