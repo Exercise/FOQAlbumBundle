@@ -43,8 +43,10 @@ class FOQAlbumExtension extends Extension
         $container->setAlias('foq_album.validator.image', $config['service']['validator']['image']);
         $container->setAlias('foq_album.constraint_factory.image', $config['service']['constraint_factory']['image']);
 
-        foreach (array('item_count_per_page', 'page_range') as $key) {
-            $container->setParameter('foq_album.provider.' . $key, $config['pagination'][$key]);
+        foreach (array('album', 'photo') as $type) {
+            foreach (array('item_count_per_page', 'page_range') as $key) {
+                $container->setParameter('foq_album.provider.' . $type . '.' . $key, $config['pagination'][$type][$key]);
+            }
         }
     }
 
