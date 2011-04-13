@@ -42,7 +42,10 @@ class PhotoController extends ContainerAware
         $this->container->get('foq_album.deleter.photo')->delete($album, $photo);
         $this->container->get('foq_album.object_manager')->flush();
 
-        return new RedirectResponse($this->container->get('router')->generate('foq_album_index'));
+        return new RedirectResponse($this->container->get('router')->generate('foq_album_album_show', array(
+            'username' => $username,
+            'slug' => $slug,
+        )));
     }
 
     protected function getTemplating()
