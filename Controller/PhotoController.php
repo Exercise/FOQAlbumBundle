@@ -3,13 +3,15 @@
 namespace FOQ\AlbumBundle\Controller;
 
 use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use FOQ\AlbumBundle\Model\AlbumInterface;
-use FOQ\AlbumBundle\Document\Photo;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+
 use Zend\Paginator\Paginator;
 use Zend\Paginator\Adapter\ArrayAdapter;
 
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use FOQ\AlbumBundle\Model\AlbumInterface;
+use FOQ\AlbumBundle\Document\Photo;
 
 class PhotoController extends ContainerAware
 {
@@ -29,7 +31,7 @@ class PhotoController extends ContainerAware
     public function showAction($username, $slug, $number)
     {
         return $this->getTemplating()->renderResponse('FOQAlbum:Photo:show.html.twig', array(
-            'album' => $album = $this->getAlbumProvider()->getAlbum($username, $slug),
+            'album' => $this->getAlbumProvider()->getAlbum($username, $slug),
             'photo' => $this->getPhotoProvider()->getPhoto($album, $number, true)
         ));
     }
