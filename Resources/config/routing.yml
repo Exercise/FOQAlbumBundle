@@ -45,3 +45,8 @@ foq_album_photo_show:
     pattern: /{username}/{slug}/{number}
     defaults: { _controller: foq_album.controller.photo:showAction }
     requirements: { _method: "get|head", slug: "[\w-]+", number: "\d+" }
+
+foq_album_photo_delete:
+    pattern: /-/delete/{username}/{slug}/{number}
+    defaults: { _controller: foq_album.controller.photo:deleteAction }
+    requirements: { _method: "get|head", slug: "[\w-]+", number: "\d+" }
