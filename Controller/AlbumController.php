@@ -15,7 +15,7 @@ class AlbumController extends ContainerAware
 {
     public function indexAction()
     {
-        return $this->getTemplating()->renderResponse('FOQAlbum:Album:index.html.twig', array(
+        return $this->getTemplating()->renderResponse('FOQAlbumBundle:Album:index.html.twig', array(
             'albums' => $this->getProvider()->getAlbums(),
             'sortBy' => $this->container->get('foq_album.sorter.album')->getRequestSortField()
         ));
@@ -23,7 +23,7 @@ class AlbumController extends ContainerAware
 
     public function listByUserAction($username)
     {
-        return $this->getTemplating()->renderResponse('FOQAlbum:Album:byUser.html.twig', array(
+        return $this->getTemplating()->renderResponse('FOQAlbumBundle:Album:byUser.html.twig', array(
             'albums' => $this->getProvider()->getUserAlbums($username),
             'user'   => $this->container->get('fos_user.user_manager')->findUserByUsername($username)
         ));
@@ -31,7 +31,7 @@ class AlbumController extends ContainerAware
 
     public function showAction($username, $slug)
     {
-        return $this->getTemplating()->renderResponse('FOQAlbum:Album:show.html.twig', array(
+        return $this->getTemplating()->renderResponse('FOQAlbumBundle:Album:show.html.twig', array(
             'album'  => $this->getProvider()->getAlbum($username, $slug, true),
             'sortBy' => $this->container->get('foq_album.sorter.album')->getRequestSortField()
         ));
@@ -47,7 +47,7 @@ class AlbumController extends ContainerAware
             return new RedirectResponse($this->getAlbumUrl($form->getData()));
         }
 
-        return $this->container->get('templating')->renderResponse('FOQAlbum:Album:new.html.twig', array('form' => $form));
+        return $this->container->get('templating')->renderResponse('FOQAlbumBundle:Album:new.html.twig', array('form' => $form));
     }
 
     public function editAction($username, $slug)
@@ -61,7 +61,7 @@ class AlbumController extends ContainerAware
             return new RedirectResponse($this->getAlbumUrl($album));
         }
 
-        return $this->container->get('templating')->renderResponse('FOQAlbum:Album:new.html.twig', array('form' => $form));
+        return $this->container->get('templating')->renderResponse('FOQAlbumBundle:Album:new.html.twig', array('form' => $form));
     }
 
     public function deleteAction($username, $slug)
@@ -89,7 +89,7 @@ class AlbumController extends ContainerAware
         $album = $this->getProvider()->getAlbum($username, $slug);
         $this->checkAlbumOwning($album);
 
-        return $this->container->get('templating')->renderResponse('FOQAlbum:Album:upload.html.twig', array(
+        return $this->container->get('templating')->renderResponse('FOQAlbumBundle:Album:upload.html.twig', array(
             'album' => $album
         ));
     }

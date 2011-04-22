@@ -22,7 +22,7 @@ class PhotoController extends ContainerAware
          */
         $this->container->get('request')->query->set('page', $page);
 
-        return $this->getTemplating()->renderResponse('FOQAlbum:Photo:byAlbum.html.twig', array(
+        return $this->getTemplating()->renderResponse('FOQAlbumBundle:Photo:byAlbum.html.twig', array(
             'album'  => $album,
             'photos' => $this->getPhotoProvider()->getAlbumPhotos($album)
         ));
@@ -30,7 +30,7 @@ class PhotoController extends ContainerAware
 
     public function showAction($username, $slug, $number)
     {
-        return $this->getTemplating()->renderResponse('FOQAlbum:Photo:show.html.twig', array(
+        return $this->getTemplating()->renderResponse('FOQAlbumBundle:Photo:show.html.twig', array(
             'album' => $this->getAlbumProvider()->getAlbum($username, $slug),
             'photo' => $this->getPhotoProvider()->getPhoto($album, $number, true)
         ));
