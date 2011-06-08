@@ -8,9 +8,10 @@ use FOQ\AlbumBundle\Model\PhotoCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use DateTime;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
 /**
- * @mongodb:MappedSuperclass
+ * @MongoDB\MappedSuperclass
  */
 abstract class Album implements AlbumInterface
 {
@@ -39,7 +40,7 @@ abstract class Album implements AlbumInterface
      * Document id
      *
      * @var string
-     * @mongodb:Id()
+     * @MongoDB\Id()
      */
     protected $id = null;
 
@@ -47,7 +48,7 @@ abstract class Album implements AlbumInterface
      * Album slug
      *
      * @var string
-     * @mongodb:Field(type="string")
+     * @MongoDB\Field(type="string")
      * @gedmo:Slug
      */
     protected $slug = null;
@@ -56,7 +57,7 @@ abstract class Album implements AlbumInterface
      * Album title
      *
      * @var string
-     * @mongodb:Field(type="string")
+     * @MongoDB\Field(type="string")
      * @gedmo:Sluggable
      */
     protected $title = null;
@@ -65,7 +66,7 @@ abstract class Album implements AlbumInterface
      * Album description
      *
      * @var string
-     * @mongodb:Field(type="string")
+     * @MongoDB\Field(type="string")
      */
     protected $description = null;
 
@@ -73,7 +74,7 @@ abstract class Album implements AlbumInterface
      * Number of photos in the album
      *
      * @var int
-     * @mongodb:Field(type="int")
+     * @MongoDB\Field(type="int")
      */
     protected $count = 0;
 
@@ -81,7 +82,7 @@ abstract class Album implements AlbumInterface
      * Whether or not the album is visible
      *
      * @var bool
-     * @mongodb:Field(type="boolean")
+     * @MongoDB\Field(type="boolean")
      */
     protected $published = false;
 
@@ -89,17 +90,17 @@ abstract class Album implements AlbumInterface
      * Number of times the album has been displayed
      *
      * @var int
-     * @mongodb:Field(type="int")
+     * @MongoDB\Field(type="int")
      */
     protected $impressions = 0;
 
     /**
-     * @mongodb:Field(type="date")
+     * @MongoDB\Field(type="date")
      */
     protected $createdAt;
 
     /**
-     * @mongodb:Field(type="date")
+     * @MongoDB\Field(type="date")
      */
     protected $updatedAt;
 
@@ -107,7 +108,7 @@ abstract class Album implements AlbumInterface
      * Date of first publication
      *
      * @var DateTime
-     * @mongodb:Field(type="date")
+     * @MongoDB\Field(type="date")
      */
     protected $publishedAt = null;
 

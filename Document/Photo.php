@@ -4,9 +4,10 @@ namespace FOQ\AlbumBundle\Document;
 use FOQ\AlbumBundle\Model\PhotoInterface;
 use FOQ\AlbumBundle\Model\PhotoCollection;
 use DateTime;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
 /**
- * @mongodb:MappedSuperclass
+ * @MongoDB\MappedSuperclass
  */
 abstract class Photo implements PhotoInterface
 {
@@ -14,7 +15,7 @@ abstract class Photo implements PhotoInterface
      * Document id
      *
      * @var string
-     * @mongodb:Id()
+     * @MongoDB\Id()
      */
     protected $id = null;
 
@@ -31,7 +32,7 @@ abstract class Photo implements PhotoInterface
      * Photo number in an album
      *
      * @var int
-     * @mongodb:Field(type="int")
+     * @MongoDB\Field(type="int")
      */
     protected $number = '';
 
@@ -39,7 +40,7 @@ abstract class Photo implements PhotoInterface
      * Photo title
      *
      * @var string
-     * @mongodb:Field(type="string")
+     * @MongoDB\Field(type="string")
      */
     protected $title = null;
 
@@ -47,17 +48,17 @@ abstract class Photo implements PhotoInterface
      * Number of times the album has been displayed
      *
      * @var int
-     * @mongodb:Field(type="int")
+     * @MongoDB\Field(type="int")
      */
     protected $impressions = 0;
 
     /**
-     * @mongodb:Field(type="date")
+     * @MongoDB\Field(type="date")
      */
     protected $createdAt;
 
     /**
-     * @mongodb:Field(type="date")
+     * @MongoDB\Field(type="date")
      */
     protected $updatedAt;
 
