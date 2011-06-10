@@ -34,7 +34,6 @@ class FOQAlbumExtension extends Extension
 
         $this->remapParametersNamespaces($config['class'], $container, array(
             'model'      => 'foq_album.model.%s.class',
-            'form'       => 'foq_album.form.%s.class',
             'controller' => 'foq_album.controller.%s.class',
         ));
 
@@ -42,6 +41,8 @@ class FOQAlbumExtension extends Extension
         $container->setAlias('foq_album.adder.photo', $config['service']['adder']['photo']);
         $container->setAlias('foq_album.validator.image', $config['service']['validator']['image']);
         $container->setAlias('foq_album.constraint_factory.image', $config['service']['constraint_factory']['image']);
+        $container->setAlias('foq_album.form_type.album', $config['service']['form_type']['album']);
+        $container->setAlias('foq_album.form_handler.album', $config['service']['form_handler']['album']);
 
         foreach (array('album', 'photo') as $type) {
             foreach (array('item_count_per_page', 'page_range') as $key) {

@@ -39,29 +39,31 @@ class AlbumController extends ContainerAware
 
     public function newAction()
     {
-        $form = $this->container->get('foq_album.form.album');
+		$form = $this->container->get('form.factory')->create($this->container->get('foq_album.form_type.album'));
+		$handler = $this->container->get('foq_album.form_handler.album');
 
-        if ($form->process()) {
+        if ($handler->process($form)) {
             $this->container->get('foq_album.object_manager')->flush();
 
             return new RedirectResponse($this->getAlbumUrl($form->getData()));
         }
 
-        return $this->container->get('templating')->renderResponse('FOQAlbumBundle:Album:new.html.twig', array('form' => $form));
+        return $this->container->get('templating')->renderResponse('FOQAlbumBundle:Album:new.html.twig', array('form' => $form->createView()));
     }
 
     public function editAction($username, $slug)
     {
         $album = $this->getProvider()->getAlbum($username, $slug);
-        $form  = $this->container->get('foq_album.form.album');
+		$form = $this->container->get('form.factory')->create($this->container->get('foq_album.form_type.album'));
+		$handler = $this->container->get('foq_album.form_handler.album');
 
-        if ($form->process($album)) {
+        if ($handler->process($form, $album)) {
             $this->container->get('foq_album.object_manager')->flush();
 
             return new RedirectResponse($this->getAlbumUrl($album));
         }
 
-        return $this->container->get('templating')->renderResponse('FOQAlbumBundle:Album:new.html.twig', array('form' => $form));
+        return $this->container->get('templating')->renderResponse('FOQAlbumBundle:Album:new.html.twig', array('form' => $form->createView()));
     }
 
     public function deleteAction($username, $slug)

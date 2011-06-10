@@ -2,10 +2,6 @@
 
 namespace FOQ\AlbumBundle\Form;
 
-use Symfony\Component\Form\Form;
-use Symfony\Component\Form\TextField;
-use Symfony\Component\Form\TextareaField;
-
 use Symfony\Component\HttpFoundation\Request;
 
 use FOQ\AlbumBundle\Model\AlbumInterface;
@@ -13,41 +9,24 @@ use FOQ\AlbumBundle\Provider\AlbumProvider;
 use FOQ\AlbumBundle\SecurityHelper;
 
 use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationException;
+use Symfony\Component\Form\FormInterface;
 
-class AlbumForm extends Form
+class AlbumFormHandler
 {
     protected $request;
     protected $provider;
     protected $objectManager;
     protected $securityHelper;
 
-    public function setRequest(Request $request)
+    public function __construct(Request $request, AlbumProvider $provider, $objectManager, SecurityHelper $securityHelper)
     {
         $this->request = $request;
-    }
-
-    public function setProvider(AlbumProvider $provider)
-    {
         $this->provider = $provider;
-    }
-
-    public function setObjectManager($objectManager)
-    {
         $this->objectManager = $objectManager;
-    }
-
-    public function setSecurityHelper(SecurityHelper $securityHelper)
-    {
         $this->securityHelper = $securityHelper;
     }
 
-    public function configure()
-    {
-        $this->add(new TextField('title'));
-        $this->add(new TextareaField('description'));
-    }
-
-    public function process(AlbumInterface $album = null)
+    public function process(FormInterface $form, AlbumInterface $album = null)
     {
         if (!$user = $this->securityHelper->getUser()) {
             throw new InsufficientAuthenticationException('You need to log in to create an album');
@@ -59,12 +38,12 @@ class AlbumForm extends Form
             throw new InsufficientAuthenticationException('You do not own this album');
         }
 
-        $this->setData($album);
+        $form->setData($album);
 
-        if ('POST' == $this->request->getMethod()) {
-            $this->bind($this->request);
+        if ('POST' === $this->request->getMethod()) {
+            $form->bindRequest($this->request);
 
-            if ($this->isValid()) {
+            if ($form->isValid()) {
                 $this->objectManager->persist($album);
                 $this->request->getSession()->setFlash('foq_album_album_create', 'success');
                 return true;

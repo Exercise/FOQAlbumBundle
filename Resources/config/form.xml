@@ -4,29 +4,16 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="foq_album.form.album.class">FOQ\AlbumBundle\Form\AlbumForm</parameter>
-        <parameter key="foq_album.form.album.name">album</parameter>
-    </parameters>
-
     <services>
-        <service id="foq_album.form.album" factory-method="create" factory-class="%foq_album.form.album.class%" class="%foq_album.form.album.class%" scope="request">
-            <!--<argument type="service" id="form.context" />-->
-            <argument>%foq_album.form.album.name%</argument>
-            <argument type="collection" />
-            <call method="setRequest">
-                <argument type="service" id="request" />
-            </call>
-            <call method="setProvider">
-                <argument type="service" id="foq_album.provider.album" />
-            </call>
-            <call method="setSecurityHelper">
-                <argument type="service" id="foq_album.security_helper" />
-            </call>
-            <call method="setObjectManager">
-                <argument type="service" id="foq_album.object_manager" />
-            </call>
-        </service>
+		<service id="foq_album.form_type.album.default" class="FOQ\AlbumBundle\Form\AlbumFormType">
+			<argument>%foq_album.model.album.class%</argument>
+		</service>
+		<service id="foq_album.form_handler.album.default" class="FOQ\AlbumBundle\Form\AlbumFormHandler" scope="request">
+			<argument type="service" id="request" />
+			<argument type="service" id="foq_album.provider.album" />
+			<argument type="service" id="foq_album.object_manager" />
+			<argument type="service" id="foq_album.security_helper" />
+		</service>
     </services>
 
 </container>
