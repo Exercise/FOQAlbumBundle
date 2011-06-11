@@ -50,6 +50,7 @@ class Configuration
                             ->scalarNode('album')->cannotBeEmpty()->defaultValue('foq_album.publisher.album.default')->end()
                         ->end()
                     ->end()
+                    ->scalarNode('uploader')->cannotBeEmpty()->defaultValue('foq_album.uploader.default')->end()
                     ->arrayNode('adder')
                         ->addDefaultsIfNotSet()
                         ->children()

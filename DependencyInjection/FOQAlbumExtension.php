@@ -39,6 +39,7 @@ class FOQAlbumExtension extends Extension
 
         $container->setAlias('foq_album.publisher.album', $config['service']['publisher']['album']);
         $container->setAlias('foq_album.adder.photo', $config['service']['adder']['photo']);
+        $container->setAlias('foq_album.uploader', $config['service']['uploader']);
         $container->setAlias('foq_album.validator.image', $config['service']['validator']['image']);
         $container->setAlias('foq_album.constraint_factory.image', $config['service']['constraint_factory']['image']);
         $container->setAlias('foq_album.form_type.album', $config['service']['form_type']['album']);
