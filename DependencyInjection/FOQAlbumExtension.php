@@ -44,6 +44,8 @@ class FOQAlbumExtension extends Extension
         $container->setAlias('foq_album.constraint_factory.image', $config['service']['constraint_factory']['image']);
         $container->setAlias('foq_album.form_type.album', $config['service']['form_type']['album']);
         $container->setAlias('foq_album.form_handler.album', $config['service']['form_handler']['album']);
+        $container->setAlias('foq_album.provider.album', $config['service']['provider']['album']);
+        $container->setAlias('foq_album.provider.photo', $config['service']['provider']['photo']);
 
         foreach (array('album', 'photo') as $type) {
             foreach (array('item_count_per_page', 'page_range') as $key) {

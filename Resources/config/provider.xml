@@ -4,13 +4,8 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="foq_album.provider.album.class">FOQ\AlbumBundle\Provider\AlbumProvider</parameter>
-        <parameter key="foq_album.provider.photo.class">FOQ\AlbumBundle\Provider\PhotoProvider</parameter>
-    </parameters>
-
     <services>
-        <service id="foq_album.provider.album" class="%foq_album.provider.album.class%" scope="request">
+        <service id="foq_album.provider.album.default" class="FOQ\AlbumBundle\Provider\AlbumProvider" scope="request" public="false">
             <argument type="service" id="foq_album.repository.album" />
             <argument type="service" id="fos_user.user_manager" />
             <argument type="service" id="foq_album.security_helper" />
@@ -24,7 +19,7 @@
                 <argument>%foq_album.provider.album.page_range%</argument>
             </call>
         </service>
-        <service id="foq_album.provider.photo" class="%foq_album.provider.photo.class%" scope="request">
+        <service id="foq_album.provider.photo.default" class="FOQ\AlbumBundle\Provider\PhotoProvider" scope="request" public="false">
             <argument type="service" id="foq_album.repository.photo" />
             <argument type="service" id="fos_user.user_manager" />
             <argument type="service" id="foq_album.security_helper" />
