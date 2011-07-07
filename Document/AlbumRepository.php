@@ -44,13 +44,13 @@ class AlbumRepository extends DocumentRepository
         return $query->getQuery()->execute();
     }
 
-    public function createPublicSortedQuery(User $forUser = null, array $sortOrder = array('date', 'desc'))
+    public function createPublicSortedQuery(User $forUser = null, array $sortOrder = array('field' => 'date', 'order' => 'desc'))
     {
         return $this->createPublishedOrOwnQuery($forUser)
             ->sort($sortOrder['field'], $sortOrder['order']);
     }
 
-    public function createPublicUserSortedQuery(User $user, User $forUser = null, array $sortOrder = array('date', 'desc'))
+    public function createPublicUserSortedQuery(User $user, User $forUser = null, array $sortOrder = array('field' => 'date', 'order' => 'desc'))
     {
         return $this->createPublishedOrOwnQuery($forUser)
             ->field('user.$id')->equals(new MongoId($user->getId()))
