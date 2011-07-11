@@ -29,4 +29,9 @@ class AlbumFormType extends AbstractType
 		);
 	}
 
+
+    public function getName()
+    {
+        return 'Album';
+    }
 }
