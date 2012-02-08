@@ -10,10 +10,10 @@
     </parameters>
 
     <services>
-        <service id="foq_album.deleter.album" class="%foq_album.deleter.album.class%">
+        <service id="foq_album.deleter.album.default" class="%foq_album.deleter.album.class%">
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
         </service>
-        <service id="foq_album.deleter.photo" class="%foq_album.deleter.photo.class%">
+        <service id="foq_album.deleter.photo.default" class="%foq_album.deleter.photo.class%">
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
             <argument type="service" id="foq_album.repository.album" />
         </service>
