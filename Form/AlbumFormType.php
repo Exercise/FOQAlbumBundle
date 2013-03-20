@@ -7,12 +7,12 @@ use Symfony\Component\Form\AbstractType;
 
 class AlbumFormType extends AbstractType
 {
-	protected $dataClass;
+    protected $dataClass;
 
-	public function __construct($dataClass)
-	{
-		$this->dataClass = $dataClass;
-	}
+    public function __construct($dataClass)
+    {
+        $this->dataClass = $dataClass;
+    }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -22,13 +22,12 @@ class AlbumFormType extends AbstractType
         ;
     }
 
-	public function getDefaultOptions(array $options)
+    public function getDefaultOptions(array $options)
 	{
-		return array(
-			'data_class' => $this->dataClass,
-		);
-	}
-
+        return array(
+            'data_class' => $this->dataClass,
+        );
+    }
 
     public function getName()
     {
