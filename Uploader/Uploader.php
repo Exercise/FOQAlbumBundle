@@ -51,8 +51,8 @@ class Uploader implements UploaderInterface
     protected function validate(UploadedFile $file)
     {
         $constraint = $this->imageConstraintFactory->createImageConstraint();
-        $isValid = $this->imageValidator->isValid($file, $constraint);
-        if (!$isValid) {
+        $errors = $this->imageValidator->validate($file, $constraint);
+        if (count($errors) > 0) {
             throw new InvalidImageException(strtr($this->imageValidator->getMessageTemplate(), $this->imageValidator->getMessageParameters()));
         }
     }
