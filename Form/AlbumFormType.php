@@ -2,7 +2,7 @@
 
 namespace FOQ\AlbumBundle\Form;
 
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 
 class AlbumFormType extends AbstractType
@@ -14,7 +14,7 @@ class AlbumFormType extends AbstractType
 		$this->dataClass = $dataClass;
 	}
 
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('title', 'text')
