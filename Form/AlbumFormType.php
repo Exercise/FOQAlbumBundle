@@ -22,7 +22,7 @@ class AlbumFormType extends AbstractType
         ;
     }
 
-	public function getDefaultOptions()
+	public function getDefaultOptions(array $options)
 	{
 		return array(
 			'data_class' => $this->dataClass,
