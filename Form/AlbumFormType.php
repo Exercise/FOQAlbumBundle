@@ -4,6 +4,7 @@ namespace FOQ\AlbumBundle\Form;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class AlbumFormType extends AbstractType
 {
@@ -22,11 +23,11 @@ class AlbumFormType extends AbstractType
         ;
     }
 
-    public function getDefaultOptions(array $options)
-	{
-        return array(
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
             'data_class' => $this->dataClass,
-        );
+        ));
     }
 
     public function getName()
