@@ -45,7 +45,7 @@ class AlbumFormHandler
 
             if ($form->isValid()) {
                 $this->objectManager->persist($album);
-                $this->request->getSession()->setFlash('foq_album_album_create', 'success');
+                $this->request->getSession()->getFlashBag()->add('foq_album_album_create', 'success');
                 return true;
             }
         }
