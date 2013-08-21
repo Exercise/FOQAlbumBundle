@@ -41,7 +41,7 @@ class AlbumFormHandler
         $form->setData($album);
 
         if ('POST' === $this->request->getMethod()) {
-            $form->bindRequest($this->request);
+            $form->handleRequest($this->request);
 
             if ($form->isValid()) {
                 $this->objectManager->persist($album);
