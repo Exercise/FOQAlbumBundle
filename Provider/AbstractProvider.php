@@ -5,31 +5,22 @@ namespace FOQ\AlbumBundle\Provider;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Doctrine\ODM\MongoDB\Query\Builder;
 
-use Zend\Paginator\Paginator;
-use ZendPaginatorAdapter\DoctrineMongoDBAdapter;
-use Zend\Paginator\Adapter\ArrayAdapter;
+use Pagerfanta\Pagerfanta;
+use Pagerfanta\Adapter\DoctrineODMMongoDBAdapter;
+use Pagerfanta\Adapter\ArrayAdapter;
 
 abstract class AbstractProvider
 {
     protected $itemCountPerPage;
-    protected $pageRange;
 
     public function getItemCountPerPage()
     {
         return $this->itemCountPerPage;
     }
+
     public function setItemCountPerPage($itemCountPerPage)
     {
         $this->itemCountPerPage = $itemCountPerPage;
-    }
-
-    public function getPageRange()
-    {
-        return $this->pageRange;
-    }
-    public function setPageRange($pageRange)
-    {
-        $this->pageRange = $pageRange;
     }
 
     protected function incrementImpressions($object)
@@ -57,15 +48,13 @@ abstract class AbstractProvider
     protected function paginate($data)
     {
         if ($data instanceof Builder) {
-            $adapter = new DoctrineMongoDBAdapter($data);
+            $adapter = new DoctrineODMMongoDBAdapter($data);
         } else {
             $adapter = new ArrayAdapter($data);
         }
-        $paginator = new Paginator($adapter);
-
-        $paginator->setCurrentPageNumber($this->request->get('page', 1));
-        $paginator->setItemCountPerPage($this->getItemCountPerPage());
-        $paginator->setPageRange($this->getPageRange());
+        $paginator = new Pagerfanta($adapter);
+        $paginator->setCurrentPage($this->request->get('page', 1));
+        $paginator->setMaxPerPage($this->getItemCountPerPage());
 
         return $paginator;
     }
