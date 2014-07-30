@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Zend\Paginator\Adapter\ArrayAdapter;
 
 /**
  * High level object finder that uses the route parameters as method arguments
