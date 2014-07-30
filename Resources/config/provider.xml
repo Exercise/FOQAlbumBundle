@@ -15,9 +15,6 @@
             <call method="setItemCountPerPage">
                 <argument>%foq_album.provider.album.item_count_per_page%</argument>
             </call>
-            <call method="setPageRange">
-                <argument>%foq_album.provider.album.page_range%</argument>
-            </call>
         </service>
         <service id="foq_album.provider.photo.default" class="FOQ\AlbumBundle\Provider\PhotoProvider" scope="request" public="false">
             <argument type="service" id="foq_album.repository.photo" />
@@ -28,9 +25,6 @@
             <argument type="service" id="request" />
             <call method="setItemCountPerPage">
                 <argument>%foq_album.provider.photo.item_count_per_page%</argument>
-            </call>
-            <call method="setPageRange">
-                <argument>%foq_album.provider.photo.page_range%</argument>
             </call>
         </service>
     </services>

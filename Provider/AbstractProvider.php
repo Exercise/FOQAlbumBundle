@@ -12,24 +12,15 @@ use Pagerfanta\Adapter\ArrayAdapter;
 abstract class AbstractProvider
 {
     protected $itemCountPerPage;
-    protected $pageRange;
 
     public function getItemCountPerPage()
     {
         return $this->itemCountPerPage;
     }
+
     public function setItemCountPerPage($itemCountPerPage)
     {
         $this->itemCountPerPage = $itemCountPerPage;
-    }
-
-    public function getPageRange()
-    {
-        return $this->pageRange;
-    }
-    public function setPageRange($pageRange)
-    {
-        $this->pageRange = $pageRange;
     }
 
     protected function incrementImpressions($object)
