@@ -7,9 +7,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-use Zend\Paginator\Paginator;
-use Zend\Paginator\Adapter\ArrayAdapter;
-
 use FOQ\AlbumBundle\Model\AlbumInterface;
 use FOQ\AlbumBundle\Document\Photo;
 
