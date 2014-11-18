@@ -14,6 +14,9 @@ class SecurityHelper
         $this->securityContext = $securityContext;
     }
 
+    /**
+     * @return void|User
+     */
     public function getUser()
     {
         if ($token = $this->securityContext->getToken()) {

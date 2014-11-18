@@ -131,9 +131,15 @@ class AlbumController extends ContainerAware
         return $this->container->get('foq_album.url_generator')->getAlbumUrl('foq_album_album_show', $album);
     }
 
+    /**
+     * @param AlbumInterface $album
+     * @throws AccessDeniedException
+     * @return void
+     */
     protected function checkAlbumOwning(AlbumInterface $album)
     {
-        if ($album->getUser() !== $this->container->get('foq_album.security_helper')->getUser()) {
+        if (!$this->container->get('foq_album.security_helper') ||
+            $album->getUser()->getId() !== $this->container->get('foq_album.security_helper')->getUser()->getId()) {
             throw new AccessDeniedException();
         }
     }
